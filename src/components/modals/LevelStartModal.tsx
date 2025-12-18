@@ -144,16 +144,6 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
           </div>
         )}
 
-        {/* Goals Panel */}
-        <div className="bg-bg-muted rounded-xl border border-border p-3 mb-4">
-          <p className="text-text-muted text-mini text-center mb-2">{t('goals')}</p>
-          <div className="flex justify-center gap-4">
-            <GoalItem icon="BLU" count={30} />
-            <GoalItem icon="RED" count={25} />
-            <GoalItem icon="GRN" count={20} />
-          </div>
-        </div>
-
         {/* Moves */}
         <div className="flex justify-center mb-4">
           <div className="bg-bg-muted rounded-xl border border-border px-6 py-2 text-center">
@@ -199,18 +189,6 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
           {tCommon('play')}
         </Button>
       </div>
-    </div>
-  );
-}
-
-// Goal Item Component
-function GoalItem({ icon, count }: { icon: string; count: number }) {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="w-10 h-10 bg-bg-page rounded-lg border border-border flex items-center justify-center mb-1">
-        <span className="text-text-secondary text-mini font-bold">{icon}</span>
-      </div>
-      <span className="text-text-primary text-value">{count}</span>
     </div>
   );
 }
