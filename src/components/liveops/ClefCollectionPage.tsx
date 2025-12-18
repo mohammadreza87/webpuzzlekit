@@ -223,7 +223,14 @@ export function ClefCollectionPage() {
 
       {/* Info Modal */}
       {showInfoModal && (
-        <InfoModal onClose={() => setShowInfoModal(false)} />
+        <InfoModal
+          onClose={() => setShowInfoModal(false)}
+          onPlay={() => {
+            setShowInfoModal(false);
+            navigate('main-menu');
+            setTimeout(() => openModal('level-start'), 100);
+          }}
+        />
       )}
     </div>
   );
@@ -232,7 +239,7 @@ export function ClefCollectionPage() {
 /**
  * Info Modal Component
  */
-function InfoModal({ onClose }: { onClose: () => void }) {
+function InfoModal({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) {
   const config = winningStreakConfig.collectibleEvent;
 
   return (
@@ -294,8 +301,8 @@ function InfoModal({ onClose }: { onClose: () => void }) {
             </p>
           </div>
 
-          <Button fullWidth onClick={onClose}>
-            Got It!
+          <Button fullWidth size="lg" onClick={onPlay}>
+            Play
           </Button>
         </div>
       </Card>

@@ -26,16 +26,13 @@ const initialStreakBoosterState: StreakBoosterState = {
   isUnlocked: false,
 };
 
-// Default end time: 5 days from now
-const defaultEventEndTime = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
-
 const initialCollectibleEventState: CollectibleEventState = {
   eventId: 'clef-collection-1',
   isActive: true,
   totalCollected: 20, // Default to 20 for demo (20/100)
   sessionCollected: 0,
   currentStep: 2, // Start at step 2 since first milestone is claimed
-  endTime: defaultEventEndTime,
+  endTime: null, // Set on client side to avoid hydration mismatch
   milestones: createInitialMilestones(),
   isUnlocked: true,
 };
@@ -200,6 +197,20 @@ function winningStreakReducer(
       };
     }
 
+    case 'COLLECTIBLE_INIT_END_TIME': {
+      // Only set if not already set (avoids overwriting user-set times)
+      if (state.collectibleEvent.endTime) {
+        return state;
+      }
+      return {
+        ...state,
+        collectibleEvent: {
+          ...state.collectibleEvent,
+          endTime: action.payload.endTime,
+        },
+      };
+    }
+
     // =========================================================================
     // MODULE 3: SUPER BOOSTER UNLOCK ACTIONS
     // =========================================================================
@@ -335,6 +346,12 @@ export function WinningStreakProvider({ children, playerLevel = 47 }: WinningStr
   useEffect(() => {
     dispatch({ type: 'SET_PLAYER_LEVEL', payload: { level: playerLevel } });
   }, [playerLevel]);
+
+  // Initialize end time on client mount (avoids hydration mismatch from Date.now())
+  useEffect(() => {
+    const endTime = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000); // 5 days from now
+    dispatch({ type: 'COLLECTIBLE_INIT_END_TIME', payload: { endTime } });
+  }, []);
 
   // Convenience methods
   const onLevelWon = () => {

@@ -259,6 +259,7 @@ export type WinningStreakAction =
   | { type: 'COLLECTIBLE_LOSE_SESSION_ITEMS' }
   | { type: 'COLLECTIBLE_CLAIM_MILESTONE'; payload: { step: number } }
   | { type: 'COLLECTIBLE_END_EVENT' }
+  | { type: 'COLLECTIBLE_INIT_END_TIME'; payload: { endTime: Date } }
   // Module 3 actions
   | { type: 'SUPER_LEVEL_WON' }
   | { type: 'SUPER_LEVEL_FAILED' }
