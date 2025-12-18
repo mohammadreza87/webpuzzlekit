@@ -66,7 +66,7 @@ Puzzle Kit is a modular, production-ready prototype for puzzle game UI/UX. Built
 | **Mission Control** | Multi-objective missions |
 | **Album** | Card collection system |
 | **Collection** | Card set completion |
-| **Winning Streak** | Streak Gift (Module 1) & Super Booster (Module 3) |
+| **Winning Streak** | Harmonic Blessing (Module 1) & Super Booster (Module 3) |
 
 ### Admin Panel
 

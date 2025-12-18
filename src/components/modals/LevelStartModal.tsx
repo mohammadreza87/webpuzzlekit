@@ -82,10 +82,10 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
           </div>
         </div>
 
-        {/* Streak Features Row - Streak Gift (left) & Super Booster (right as separate button) */}
+        {/* Streak Features Row - Harmonic Blessing (left) & Super Booster (right as separate button) */}
         {(showStreakGift || showSuperBooster) && (
           <div className="flex items-center justify-between gap-3 mb-4">
-            {/* Streak Gift - Module 1 */}
+            {/* Harmonic Blessing - Module 1 */}
             {showStreakGift && (
               <button
                 onClick={handleStreakGiftInfo}
@@ -101,7 +101,7 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
                   </div>
                 </div>
                 <div className="text-left">
-                  <p className="text-caption text-text-primary font-medium">Streak Gift</p>
+                  <p className="text-caption text-text-primary font-medium">Harmonic Blessing</p>
                   {/* Progress bar */}
                   <div className="flex items-center gap-2 mt-1">
                     <div className="w-14 h-2 bg-bg-page rounded-full overflow-hidden border border-border">

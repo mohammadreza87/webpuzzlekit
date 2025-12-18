@@ -10,7 +10,7 @@ interface ButlersGiftInfoModalProps {
 }
 
 /**
- * Streak Gift Info Modal
+ * Harmonic Blessing Info Modal
  *
  * Explains Module 1: Streak Booster Ladder
  * Shows how consecutive wins earn bonus boosters at the start of each level.
@@ -44,7 +44,7 @@ export function ButlersGiftInfoModal({ onAnimatedClose }: ButlersGiftInfoModalPr
 
       {/* Header */}
       <div className="bg-bg-inverse py-3 px-3 flex items-center justify-center relative">
-        <h2 className="text-text-inverse text-h3">Streak Gift</h2>
+        <h2 className="text-text-inverse text-h3">Harmonic Blessing</h2>
         <button
           onClick={handleClose}
           className="absolute right-2 w-7 h-7 bg-bg-muted rounded-full flex items-center justify-center border border-border hover:opacity-80 transition-colors"

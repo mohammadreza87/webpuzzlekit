@@ -67,7 +67,7 @@ export function LevelFailedModal({ onAnimatedClose }: LevelFailedModalProps) {
 
   // Build loss messages
   const losses: string[] = [];
-  if (hadStreak) losses.push("Streak Gift");
+  if (hadStreak) losses.push("Harmonic Blessing");
   if (hadSuperBooster && !superBooster.isActive) losses.push("Super Booster progress");
   if (hadBooks) losses.push("Clefs");
 
