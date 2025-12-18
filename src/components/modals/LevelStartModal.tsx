@@ -144,14 +144,6 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
           </div>
         )}
 
-        {/* Moves */}
-        <div className="flex justify-center mb-4">
-          <div className="bg-bg-muted rounded-xl border border-border px-6 py-2 text-center">
-            <p className="text-text-secondary text-mini">{t('moves', { count: 25 })}</p>
-            <p className="text-text-primary text-h3">25</p>
-          </div>
-        </div>
-
         {/* Boosters Section */}
         <p className="text-text-muted text-mini text-center mb-2">{t('selectBoosters')}</p>
         <div className="flex justify-center gap-3 mb-4">
