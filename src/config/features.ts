@@ -103,8 +103,8 @@ export const FEATURES = {
   /** Lava Quest - Special quest chain */
   EVENT_LAVA_QUEST: true,
 
-  /** Book of Treasure - Chapter-based rewards */
-  EVENT_BOOK_OF_TREASURE: true,
+  /** Clef Collection - Collectible milestone rewards */
+  EVENT_CLEF_COLLECTION: true,
 
   /** Mission Control - Daily/weekly missions */
   EVENT_MISSION_CONTROL: true,

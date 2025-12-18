@@ -3,7 +3,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import gsap from 'gsap';
-import { GameProvider, NavigationProvider, AdminProvider, useNavigation, useAdmin } from '@/store';
+import { GameProvider, NavigationProvider, AdminProvider, WinningStreakProvider, useNavigation, useAdmin, useGame } from '@/store';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 
 // Eager imports - frequently accessed pages
@@ -39,7 +39,7 @@ const RoyalPassPage = dynamic(() => import('@/components/liveops/RoyalPassPage')
 const SkyRacePage = dynamic(() => import('@/components/liveops/SkyRacePage').then(m => ({ default: m.SkyRacePage })), { loading: () => <PageSkeleton /> });
 const KingsCupPage = dynamic(() => import('@/components/liveops/KingsCupPage').then(m => ({ default: m.KingsCupPage })), { loading: () => <PageSkeleton /> });
 const TeamChestPage = dynamic(() => import('@/components/liveops/TeamChestPage').then(m => ({ default: m.TeamChestPage })), { loading: () => <PageSkeleton /> });
-const BookOfTreasurePage = dynamic(() => import('@/components/liveops/BookOfTreasurePage').then(m => ({ default: m.BookOfTreasurePage })), { loading: () => <PageSkeleton /> });
+const ClefCollectionPage = dynamic(() => import('@/components/liveops/ClefCollectionPage').then(m => ({ default: m.ClefCollectionPage })), { loading: () => <PageSkeleton /> });
 const LightningRushPage = dynamic(() => import('@/components/liveops/LightningRushPage').then(m => ({ default: m.LightningRushPage })), { loading: () => <PageSkeleton /> });
 const LavaQuestPage = dynamic(() => import('@/components/liveops/LavaQuestPage').then(m => ({ default: m.LavaQuestPage })), { loading: () => <PageSkeleton /> });
 const MissionControlPage = dynamic(() => import('@/components/liveops/MissionControlPage').then(m => ({ default: m.MissionControlPage })), { loading: () => <PageSkeleton /> });
@@ -64,7 +64,7 @@ const pageComponents: Record<PageId, React.ComponentType> = {
   'sky-race': SkyRacePage,
   'kings-cup': KingsCupPage,
   'team-chest': TeamChestPage,
-  'book-of-treasure': BookOfTreasurePage,
+  'clef-collection': ClefCollectionPage,
   'lightning-rush': LightningRushPage,
   'lava-quest': LavaQuestPage,
   'mission-control': MissionControlPage,
@@ -146,12 +146,23 @@ function PageRenderer() {
   );
 }
 
+function WinningStreakWrapper({ children }: { children: React.ReactNode }) {
+  const { state } = useGame();
+  return (
+    <WinningStreakProvider playerLevel={state.player.currentLevel}>
+      {children}
+    </WinningStreakProvider>
+  );
+}
+
 export function AppShell() {
   return (
     <AdminProvider>
       <GameProvider>
         <NavigationProvider>
-          <PageRenderer />
+          <WinningStreakWrapper>
+            <PageRenderer />
+          </WinningStreakWrapper>
         </NavigationProvider>
       </GameProvider>
     </AdminProvider>

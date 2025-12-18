@@ -3,12 +3,13 @@
 import React from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { useGame, useNavigation, useAdmin } from '@/store';
+import { useGame, useNavigation, useAdmin, useWinningStreak } from '@/store';
 import { BottomNavigation } from '@/components/shared';
 import { LevelRoadmap } from './LevelRoadmap';
 import { useTimer } from '@/hooks';
 import { EVENT_REGISTRY, isValidEventId, type EventId } from '@/config/registry';
-import { winningStreakMockData, getEventEndTime } from '@/config/mockData';
+import { getEventEndTime } from '@/config/mockData';
+import { winningStreakConfig } from '@/config';
 import { isFeatureEnabled, type FeatureFlag } from '@/config/features';
 
 // Map event IDs to feature flags for filtering
@@ -17,7 +18,7 @@ const eventToFeature: Record<string, FeatureFlag> = {
   'sky-race': 'EVENT_SKY_RACE',
   'kings-cup': 'EVENT_KINGS_CUP',
   'team-chest': 'EVENT_TEAM_CHEST',
-  'book-of-treasure': 'EVENT_BOOK_OF_TREASURE',
+  'clef-collection': 'EVENT_CLEF_COLLECTION',
   'lightning-rush': 'EVENT_LIGHTNING_RUSH',
   'lava-quest': 'EVENT_LAVA_QUEST',
   'mission-control': 'EVENT_MISSION_CONTROL',
@@ -30,6 +31,7 @@ export function MainMenu() {
   const { state } = useGame();
   const { navigate, openModal } = useNavigation();
   const { config, isEventEnabled } = useAdmin();
+  const { state: winningStreakState } = useWinningStreak();
   const { player, areas } = state;
   const t = useTranslations('game');
   const tCommon = useTranslations('common');
@@ -46,16 +48,21 @@ export function MainMenu() {
     return isEventEnabled(eventId) && (!featureFlag || isFeatureEnabled(featureFlag));
   };
 
-  // Get events from placement config (exclude winning-streak from side events, filter by feature flags)
+  // Get events from placement config (exclude clef-collection from side events since it shows as top bar)
   const leftEvents = (config.eventPlacement?.left || [])
-    .filter(id => id !== 'winning-streak')
+    .filter(id => id !== 'clef-collection')
     .filter(id => isEventAvailable(id));
   const rightEvents = (config.eventPlacement?.right || [])
-    .filter(id => id !== 'winning-streak')
+    .filter(id => id !== 'clef-collection')
     .filter(id => isEventAvailable(id));
 
-  // Check if winning streak is enabled (both admin toggle AND feature flag)
-  const showWinningStreak = isEventAvailable('winning-streak');
+  // Check if Clef Collection is active (Module 2 - shows as top progress bar)
+  const { collectibleEvent } = winningStreakState;
+  const { enabledModules } = winningStreakConfig;
+  const showClefCollection = enabledModules.collectibleEvent &&
+    collectibleEvent.isUnlocked &&
+    collectibleEvent.isActive &&
+    isEventAvailable('clef-collection');
 
   return (
     <div className="relative flex flex-col h-full bg-bg-page overflow-hidden">
@@ -117,13 +124,13 @@ export function MainMenu() {
         </button>
       </div>
 
-      {/* Winning Streak Progress Bar */}
-      {showWinningStreak && (
-        <WinningStreakBar
-          current={winningStreakMockData.current}
-          target={winningStreakMockData.target}
-          endTime={winningStreakMockData.getEndTime()}
-          onClick={() => navigate('winning-streak')}
+      {/* Clef Collection Progress Bar (Module 2) */}
+      {showClefCollection && (
+        <ClefCollectionBar
+          current={collectibleEvent.totalCollected || 20}
+          target={100}
+          endTime={collectibleEvent.endTime}
+          onClick={() => navigate('clef-collection')}
         />
       )}
 
@@ -242,61 +249,90 @@ function EventButton({ icon, timer, onClick, bgColor = 'bg-bg-inverse' }: EventB
   );
 }
 
-// Winning Streak Progress Bar Component
-interface WinningStreakBarProps {
+// Clef Collection Progress Bar Component (Module 2)
+interface ClefCollectionBarProps {
   current: number;
   target: number;
-  endTime: Date;
+  endTime: Date | null;
   onClick: () => void;
 }
 
-function WinningStreakBar({ current, target, endTime, onClick }: WinningStreakBarProps) {
+function ClefCollectionBar({
+  current,
+  target,
+  endTime,
+  onClick,
+}: ClefCollectionBarProps) {
   const timerData = useTimer(endTime);
   const progress = Math.min(100, (current / target) * 100);
 
   return (
     <button
       onClick={onClick}
-      className="mx-2 mt-1 bg-bg-muted rounded-lg border border-border overflow-hidden"
+      className="mx-2 mt-1 bg-bg-muted rounded-lg border border-border overflow-hidden p-2"
     >
       {/* Progress Bar Section */}
-      <div className="flex items-center gap-2 p-2">
-        {/* Book/Streak Icon */}
+      <div className="flex items-center gap-2">
+        {/* Clef Icon */}
         <div className="w-8 h-8 bg-bg-inverse rounded-lg flex items-center justify-center border border-border flex-shrink-0">
-          <span className="text-text-inverse text-mini font-bold">WS</span>
+          <ClefIcon className="w-5 h-5 text-text-inverse" />
         </div>
 
         {/* Progress Bar */}
-        <div className="flex-1 h-5 bg-border rounded-full overflow-hidden border border-border">
-          <div
-            className="h-full bg-bg-inverse rounded-full flex items-center justify-center transition-all"
-            style={{ width: `${Math.max(progress, 25)}%` }}
-          >
-            <span className="text-text-inverse text-mini font-bold">{current}/{target}</span>
-          </div>
-        </div>
-
-        {/* Reward Gift Icon */}
-        <div className="w-10 h-10 bg-bg-inverse rounded-lg flex items-center justify-center border border-border flex-shrink-0 relative">
-          <span className="text-text-inverse text-mini font-bold">GFT</span>
-          {/* x1 badge */}
-          <div className="absolute -bottom-1 -right-1 bg-bg-muted rounded px-1 border border-border">
-            <span className="text-text-secondary text-mini">x1</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Timer Section */}
-      <div className="flex justify-center pb-2">
-        <div className="flex items-center gap-1 bg-bg-card rounded-full px-3 py-0.5 border border-border">
-          <div className="w-4 h-4 bg-border rounded-full flex items-center justify-center">
-            <span className="text-text-muted text-mini">T</span>
-          </div>
-          <span className="text-text-primary text-value-sm">
-            {timerData.days}d {timerData.hours}h
+        <div className="flex-1 h-5 bg-bg-page rounded-full overflow-hidden border border-border relative">
+          {progress > 0 && (
+            <div
+              className="h-full bg-brand-primary rounded-full transition-all"
+              style={{ width: `${progress}%` }}
+            />
+          )}
+          <span className="absolute inset-0 flex items-center justify-center text-text-primary text-mini font-bold">
+            {current}/{target}
           </span>
         </div>
+
+        {/* Gift Box Icon */}
+        <div className="w-8 h-8 bg-bg-inverse rounded-lg flex items-center justify-center border border-border flex-shrink-0">
+          <GiftIcon className="w-5 h-5 text-text-inverse" />
+        </div>
       </div>
+
+      {/* Timer Section - Centered below */}
+      {endTime && (
+        <div className="flex justify-center mt-1.5">
+          <div className="flex items-center gap-1">
+            <ClockIcon className="w-3 h-3 text-text-muted" />
+            <span className="text-text-secondary text-mini">
+              {timerData.days}d {timerData.hours}h {timerData.minutes}m
+            </span>
+          </div>
+        </div>
+      )}
     </button>
+  );
+}
+
+// Icons for the progress bar
+function ClefIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+    </svg>
+  );
+}
+
+function GiftIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z" />
+    </svg>
+  );
+}
+
+function ClockIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+    </svg>
   );
 }

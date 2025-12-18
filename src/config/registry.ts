@@ -115,9 +115,9 @@ export const PAGE_REGISTRY = {
     icon: '/icons/Archive.svg',
     category: 'liveops',
   },
-  'book-of-treasure': {
-    id: 'book-of-treasure',
-    name: 'Book of Treasure',
+  'clef-collection': {
+    id: 'clef-collection',
+    name: 'Clef Collection',
     icon: '/icons/Bookmark.svg',
     category: 'liveops',
   },
@@ -196,13 +196,13 @@ export const EVENT_REGISTRY = {
     page: 'team-chest' as const,
     description: 'Work with your team to unlock rewards',
   },
-  'book-of-treasure': {
-    id: 'book-of-treasure',
-    name: 'Book of Treasure',
+  'clef-collection': {
+    id: 'clef-collection',
+    name: 'Clef Collection',
     icon: '/icons/Bookmark.svg',
-    shortLabel: 'BT',
-    page: 'book-of-treasure' as const,
-    description: 'Complete chapters to find treasure',
+    shortLabel: 'CC',
+    page: 'clef-collection' as const,
+    description: 'Collect clefs to earn milestone rewards',
   },
   'lightning-rush': {
     id: 'lightning-rush',
@@ -287,6 +287,8 @@ export const MODAL_REGISTRY = {
   'team-info': { id: 'team-info', name: 'Team Info' },
   'member-profile': { id: 'member-profile', name: 'Member Profile' },
   'weekly-contest-info': { id: 'weekly-contest-info', name: 'Weekly Contest Info' },
+  'butlers-gift-info': { id: 'butlers-gift-info', name: "Butler's Gift Info" },
+  'super-booster-info': { id: 'super-booster-info', name: 'Super Booster Info' },
 } as const;
 
 // =============================================================================

@@ -60,12 +60,13 @@ Puzzle Kit is a modular, production-ready prototype for puzzle game UI/UX. Built
 | **Sky Race** | Competitive milestone race |
 | **King's Cup** | Tournament leaderboard |
 | **Team Chest** | Collaborative team rewards |
-| **Book of Treasure** | Chapter-based objectives |
+| **Clef Collection** | Collectible milestone rewards (Winning Streak Module 2) |
 | **Lightning Rush** | Time-limited challenges |
 | **Lava Quest** | Progressive milestones |
 | **Mission Control** | Multi-objective missions |
 | **Album** | Card collection system |
 | **Collection** | Card set completion |
+| **Winning Streak** | Streak Gift (Module 1) & Super Booster (Module 3) |
 
 ### Admin Panel
 
@@ -209,12 +210,12 @@ src/
 │   │   ├── AreaTasksPage.tsx   # Area objectives
 │   │   └── GameplayPage.tsx    # Match-3 game board
 │   │
-│   ├── liveops/                # LiveOps event pages (10)
+│   ├── liveops/                # LiveOps event pages (11)
 │   │   ├── RoyalPassPage.tsx   # Season pass
 │   │   ├── SkyRacePage.tsx     # Race event
 │   │   ├── KingsCupPage.tsx    # Tournament
 │   │   ├── TeamChestPage.tsx   # Team rewards
-│   │   ├── BookOfTreasurePage.tsx # Chapter objectives
+│   │   ├── ClefCollectionPage.tsx # Collectible milestone event
 │   │   ├── LightningRushPage.tsx # Timed challenges
 │   │   ├── LavaQuestPage.tsx   # Progressive milestones
 │   │   ├── MissionControlPage.tsx # Multi-objective

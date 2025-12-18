@@ -80,7 +80,7 @@ export const allEvents = getAllEventIds().map(id => ({
 }));
 
 // Default enabled events
-export const defaultEnabledEvents: string[] = ['royal-pass', 'lava-quest', 'mission-control', 'lightning-rush'];
+export const defaultEnabledEvents: string[] = ['royal-pass', 'lava-quest', 'mission-control', 'lightning-rush', 'clef-collection'];
 
 // Default event placement
 export const defaultEventPlacement: EventPlacement = {

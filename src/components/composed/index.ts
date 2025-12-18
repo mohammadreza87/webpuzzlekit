@@ -41,3 +41,13 @@ export { Tabs } from './Tabs';
 // Animated components
 export { AnimatedModal, ModalHeader } from './AnimatedModal';
 export { AnimatedTabs, AnimatedTabBar } from './AnimatedTabs';
+
+// Winning Streak components
+export { StreakIndicator } from './StreakIndicator';
+export type { StreakIndicatorProps } from './StreakIndicator';
+
+export { StreakTierItem } from './StreakTierItem';
+export type { StreakTierItemProps } from './StreakTierItem';
+
+export { SuperBoosterIndicator } from './SuperBoosterIndicator';
+export type { SuperBoosterIndicatorProps } from './SuperBoosterIndicator';

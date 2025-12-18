@@ -175,8 +175,8 @@ export function createAllLiveOpsEventsFullList(): LiveOpsEvent[] {
     },
     {
       id: 'ev8',
-      type: 'book-of-treasure',
-      name: 'Book of Treasure',
+      type: 'clef-collection',
+      name: 'Clef Collection',
       active: true,
       endTime: new Date(now + 7 * TIME.DAY),
       progress: 12,

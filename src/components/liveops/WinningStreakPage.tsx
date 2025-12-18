@@ -1,113 +1,149 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useNavigation, useAdmin } from '@/store';
+import { useNavigation, useAdmin, useWinningStreak } from '@/store';
 import { useTimer } from '@/hooks';
-
-interface StreakReward {
-  level: number;
-  icon: string;
-  amount: string;
-  claimed: boolean;
-  unlocked: boolean;
-}
-
-const streakData = {
-  currentStreak: 3,
-  totalRequired: 10,
-  endTime: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
-  grandPrize: { coins: 10000 },
-  ladder: [
-    { level: 1, icon: 'TNT', amount: 'x1', claimed: true, unlocked: true },
-    { level: 2, icon: 'GFT', amount: 'x1', claimed: true, unlocked: true },
-    { level: 3, icon: 'RKT', amount: 'x1', claimed: true, unlocked: true },
-    { level: 4, icon: 'x2', amount: '15m', claimed: false, unlocked: false },
-    { level: 5, icon: 'CHT', amount: 'x1', claimed: false, unlocked: false },
-    { level: 6, icon: 'CLR', amount: 'x1', claimed: false, unlocked: false },
-  ] as StreakReward[],
-};
+import { Button, Card, ProgressBar } from '@/components/base';
+import { StreakIndicator, StreakTierItem } from '@/components/composed';
+import { winningStreakConfig, streakTiers } from '@/config';
 
 type ViewState = 'intro' | 'ladder';
 
+/**
+ * WinningStreakPage - Module 1: Streak Booster Ladder
+ *
+ * A permanent progression system that rewards players with pre-level boosters
+ * for consecutive level completions. Boosters accumulate up to a maximum tier
+ * and reset completely upon level failure.
+ *
+ * Based on Royal Match's Butler's Gift feature.
+ */
 export function WinningStreakPage() {
   const { navigate } = useNavigation();
   const { isEventEnabled } = useAdmin();
+  const { state: winningStreakState } = useWinningStreak();
   const [viewState, setViewState] = useState<ViewState>('intro');
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const timer = useTimer(streakData.endTime);
 
+  const { streakBooster } = winningStreakState;
+  const { maxTier } = winningStreakConfig.streakBooster;
+
+  // Mock event end time for demo (in real app, this would come from server)
+  const [eventEndTime] = useState(() => new Date(Date.now() + 6 * 24 * 60 * 60 * 1000));
+  const timer = useTimer(eventEndTime);
+
+  // Check if feature is enabled
   if (!isEventEnabled('winning-streak')) {
     return (
-      <div className="flex flex-col h-full bg-bg-inverse items-center justify-center">
-        <p className="text-text-inverse text-value">Event not available</p>
-        <button onClick={() => navigate('main-menu')} className="mt-4 text-brand-primary underline">
+      <div className="flex flex-col h-full bg-bg-page items-center justify-center p-4">
+        <div className="w-16 h-16 bg-bg-muted rounded-full flex items-center justify-center mb-4 border border-border">
+          <span className="text-h2 text-text-muted">!</span>
+        </div>
+        <p className="text-body text-text-primary mb-2">Feature Not Available</p>
+        <p className="text-caption text-text-secondary text-center mb-4">
+          Winning Streak unlocks at level {winningStreakConfig.streakBooster.unlockLevel}
+        </p>
+        <Button variant="outline" onClick={() => navigate('main-menu')}>
           Go Back
-        </button>
+        </Button>
       </div>
     );
   }
 
-  const progress = (streakData.currentStreak / streakData.totalRequired) * 100;
+  // Check if unlocked
+  if (!streakBooster.isUnlocked) {
+    return (
+      <div className="flex flex-col h-full bg-bg-page items-center justify-center p-4">
+        <div className="w-16 h-16 bg-bg-muted rounded-full flex items-center justify-center mb-4 border border-border">
+          <LockIcon className="w-8 h-8 text-text-muted" />
+        </div>
+        <p className="text-body text-text-primary mb-2">Feature Locked</p>
+        <p className="text-caption text-text-secondary text-center mb-4">
+          Reach level {winningStreakConfig.streakBooster.unlockLevel} to unlock Winning Streak
+        </p>
+        <Button variant="outline" onClick={() => navigate('main-menu')}>
+          Go Back
+        </Button>
+      </div>
+    );
+  }
+
+  const grandPrize = { coins: 10000 }; // Would come from config
 
   // Intro Screen
   if (viewState === 'intro') {
     return (
       <div className="flex flex-col h-full bg-bg-inverse overflow-hidden">
+        {/* Header */}
         <div className="bg-bg-inverse pt-2 pb-3 px-3 flex items-center justify-between">
           <div className="w-8" />
           <h1 className="text-text-inverse text-h1">Winning Streak</h1>
           <button
             onClick={() => navigate('main-menu')}
-            className="w-8 h-8 bg-bg-inverse rounded-full flex items-center justify-center border border-border"
+            className="w-8 h-8 bg-bg-muted rounded-full flex items-center justify-center border border-border hover:opacity-80 transition-colors"
           >
-            <span className="text-text-inverse font-bold">X</span>
+            <span className="text-text-primary font-bold">X</span>
           </button>
         </div>
 
+        {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center px-4">
-          <div className="w-64 h-48 bg-bg-muted rounded-2xl flex flex-col items-center justify-center mb-4 border border-border">
-            <div className="bg-bg-card rounded-lg px-3 py-2 mb-2 border border-border">
-              <p className="text-text-muted text-mini text-center">Grand Prize!</p>
-              <div className="flex items-center gap-1">
-                <div className="w-5 h-5 bg-border-strong rounded-full flex items-center justify-center border border-border">
-                  <span className="text-text-primary text-mini">$</span>
-                </div>
-                <span className="text-text-primary text-value">{streakData.grandPrize.coins.toLocaleString()}</span>
+          {/* Grand Prize Preview */}
+          <Card padding="md" className="w-64 mb-4 text-center">
+            <p className="text-mini text-text-muted mb-2">Grand Prize</p>
+            <div className="w-20 h-20 bg-bg-muted rounded-xl mx-auto mb-2 flex items-center justify-center border border-border">
+              <TrophyIcon className="w-10 h-10 text-text-secondary" />
+            </div>
+            <div className="flex items-center justify-center gap-1">
+              <div className="w-5 h-5 bg-bg-inverse rounded-full flex items-center justify-center">
+                <span className="text-text-inverse text-mini">$</span>
               </div>
+              <span className="text-value-lg text-text-primary">
+                {grandPrize.coins.toLocaleString()}
+              </span>
             </div>
-            <div className="w-20 h-20 bg-border-strong rounded-xl flex items-center justify-center">
-              <span className="text-text-muted text-mini">[KING]</span>
-            </div>
-          </div>
+          </Card>
 
+          {/* Current Progress */}
           <div className="w-full max-w-[280px] mb-4">
             <div className="flex items-center gap-2 mb-1">
-              <div className="flex-1 h-3 bg-border-strong rounded-full overflow-hidden">
-                <div className="h-full bg-bg-inverse rounded-full" style={{ width: `${progress}%` }} />
-              </div>
+              <ProgressBar current={streakBooster.currentTier} max={maxTier} size="lg" className="flex-1" />
               <div className="w-10 h-10 bg-bg-inverse rounded-lg flex items-center justify-center border border-border">
-                <span className="text-text-inverse text-mini">GFT</span>
+                <FireIcon className="w-5 h-5 text-text-inverse" />
               </div>
             </div>
-            <p className="text-text-inverse text-value text-center">{streakData.currentStreak}/{streakData.totalRequired}</p>
+            <p className="text-text-inverse text-value text-center">
+              Tier {streakBooster.currentTier}/{maxTier}
+            </p>
           </div>
 
+          {/* Timer */}
           <div className="flex items-center gap-2 bg-bg-card rounded-full px-4 py-1.5 mb-4 border border-border">
-            <div className="w-5 h-5 bg-border-strong rounded-full flex items-center justify-center">
-              <span className="text-text-muted text-mini">T</span>
+            <div className="w-5 h-5 bg-bg-inverse rounded-full flex items-center justify-center">
+              <span className="text-text-inverse text-mini">T</span>
             </div>
-            <span className="text-text-primary text-value">{timer.days}d {timer.hours}h</span>
+            <span className="text-text-primary text-value">
+              {timer.days}d {timer.hours}h
+            </span>
           </div>
 
-          <p className="text-text-inverse text-center text-body mb-2">Win levels to collect rewards!</p>
-          <p className="text-text-muted text-center text-caption mb-6">Complete all steps to win the Grand Prize!</p>
+          {/* Description */}
+          <p className="text-text-inverse text-center text-body mb-2">
+            Win levels to earn boosters!
+          </p>
+          <p className="text-text-muted text-center text-caption mb-6">
+            Each consecutive win unlocks more boosters for your next level.
+          </p>
 
-          <button
+          {/* CTA Button */}
+          <Button
+            fullWidth
+            size="lg"
             onClick={() => setViewState('ladder')}
-            className="w-full max-w-[280px] py-4 bg-bg-inverse rounded-xl border border-border"
+            className="max-w-[280px]"
           >
-            <span className="text-text-inverse text-h2">Play</span>
-          </button>
+            View Progress
+          </Button>
         </div>
       </div>
     );
@@ -115,199 +151,242 @@ export function WinningStreakPage() {
 
   // Ladder View
   return (
-    <div className="flex flex-col h-full bg-bg-inverse overflow-hidden">
+    <div className="flex flex-col h-full bg-bg-page overflow-hidden">
+      {/* Header */}
       <div className="bg-bg-inverse pt-2 pb-3 px-3 flex items-center justify-between">
         <button
           onClick={() => setShowInfoModal(true)}
-          className="w-8 h-8 bg-border-strong rounded-full flex items-center justify-center border border-border"
+          className="w-8 h-8 bg-bg-muted rounded-full flex items-center justify-center border border-border hover:opacity-80 transition-colors"
         >
-          <span className="text-text-primary text-value-sm">i</span>
+          <span className="text-text-primary text-value-sm font-bold">?</span>
         </button>
         <h1 className="text-text-inverse text-h1">Winning Streak</h1>
         <button
           onClick={() => navigate('main-menu')}
-          className="w-8 h-8 bg-bg-inverse rounded-full flex items-center justify-center border border-border"
+          className="w-8 h-8 bg-bg-muted rounded-full flex items-center justify-center border border-border hover:opacity-80 transition-colors"
         >
-          <span className="text-text-inverse font-bold">X</span>
+          <span className="text-text-primary font-bold">X</span>
         </button>
       </div>
 
-      <div className="flex-1 mx-2 mb-2 bg-bg-muted rounded-2xl border border-border overflow-hidden flex flex-col">
-        <div className="flex justify-center py-2">
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Timer */}
+        <div className="flex justify-center py-3">
           <div className="flex items-center gap-2 bg-bg-card rounded-full px-4 py-1.5 border border-border">
-            <div className="w-5 h-5 bg-border-strong rounded-full flex items-center justify-center">
-              <span className="text-text-muted text-mini">T</span>
+            <div className="w-5 h-5 bg-bg-inverse rounded-full flex items-center justify-center">
+              <span className="text-text-inverse text-mini">T</span>
             </div>
-            <span className="text-text-primary text-value">{timer.days}d {timer.hours}h</span>
+            <span className="text-text-primary text-value">
+              {timer.days}d {timer.hours}h {timer.minutes}m
+            </span>
           </div>
+        </div>
+
+        {/* Current Streak Indicator */}
+        <div className="px-4 mb-4">
+          <StreakIndicator
+            currentTier={streakBooster.currentTier}
+            streakCount={streakBooster.streakCount}
+            maxTier={maxTier}
+            showBoosters={true}
+          />
         </div>
 
         {/* Grand Prize */}
-        <div className="px-3 pb-2">
-          <div className="bg-bg-muted rounded-xl p-3 border border-border">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-bg-inverse rounded-xl flex items-center justify-center border border-border">
-                  <span className="text-text-inverse text-value">CHT</span>
-                </div>
-                <div>
-                  <p className="text-text-primary text-value">Grand Prize</p>
-                  <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 bg-border-strong rounded-full flex items-center justify-center border border-border">
-                      <span className="text-text-primary text-mini">$</span>
-                    </div>
-                    <span className="text-text-primary text-value-sm">{streakData.grandPrize.coins.toLocaleString()}</span>
+        <div className="px-4 mb-4">
+          <Card padding="md" className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-bg-inverse rounded-xl flex items-center justify-center">
+                <TrophyIcon className="w-6 h-6 text-text-inverse" />
+              </div>
+              <div>
+                <p className="text-value text-text-primary">Grand Prize</p>
+                <div className="flex items-center gap-1">
+                  <div className="w-4 h-4 bg-bg-inverse rounded-full flex items-center justify-center">
+                    <span className="text-text-inverse text-mini">$</span>
                   </div>
+                  <span className="text-value-sm text-text-secondary">
+                    {grandPrize.coins.toLocaleString()} Coins
+                  </span>
                 </div>
               </div>
-              <div className="w-8 h-8 bg-border-strong rounded-lg flex items-center justify-center">
-                <span className="text-text-muted text-mini">[lock]</span>
-              </div>
             </div>
-          </div>
+            {streakBooster.currentTier >= maxTier ? (
+              <Button size="sm">Claim</Button>
+            ) : (
+              <LockIcon className="w-6 h-6 text-text-muted" />
+            )}
+          </Card>
         </div>
 
-        {/* Progress */}
-        <div className="px-3 pb-3">
-          <div className="flex items-center gap-2">
-            <div className="flex-1 h-3 bg-border-strong rounded-full overflow-hidden">
-              <div className="h-full bg-bg-inverse rounded-full" style={{ width: `${Math.max(progress, 20)}%` }} />
-            </div>
-            <span className="text-text-primary text-value-sm">{streakData.currentStreak}/{streakData.totalRequired}</span>
-            <div className="w-8 h-8 bg-bg-inverse rounded-lg flex items-center justify-center border border-border">
-              <span className="text-text-inverse text-mini">GFT</span>
-            </div>
-          </div>
-        </div>
+        {/* Tier Ladder */}
+        <div className="px-4 pb-4">
+          <p className="text-label text-text-secondary mb-3">Streak Tiers</p>
+          {[...streakTiers].reverse().slice(0, -1).map((tier, index) => {
+            const reversedTiers = [...streakTiers].reverse().slice(0, -1);
+            const isFirst = index === 0;
+            const isLast = index === reversedTiers.length - 1;
 
-        {/* Ladder */}
-        <div className="flex-1 overflow-y-auto px-3 pb-3">
-          {[...streakData.ladder].reverse().map((reward, index) => {
-            const reversedIndex = streakData.ladder.length - 1 - index;
             return (
-              <div key={reward.level} className="relative flex items-center gap-2 mb-2">
-                <div className="w-12 flex flex-col items-center">
-                  {index > 0 && <div className={`w-0.5 h-3 ${reward.unlocked ? 'bg-bg-inverse' : 'bg-border-strong'}`} />}
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    reward.claimed ? 'bg-bg-inverse' : reward.unlocked ? 'bg-border-strong' : 'bg-border-strong'
-                  }`}>
-                    <span className={`text-value ${reward.claimed || reward.unlocked ? 'text-text-inverse' : 'text-text-muted'}`}>
-                      {reward.level}
-                    </span>
-                  </div>
-                  {index < streakData.ladder.length - 1 && (
-                    <div className={`w-0.5 h-3 ${streakData.ladder[reversedIndex - 1]?.unlocked ? 'bg-bg-inverse' : 'bg-border-strong'}`} />
-                  )}
-                </div>
-
-                <div className={`flex-1 rounded-xl p-2 border flex items-center justify-between ${
-                  reward.claimed ? 'bg-bg-card border-bg-inverse' : reward.unlocked ? 'bg-bg-card border-border' : 'bg-bg-muted border-border opacity-50'
-                }`}>
-                  <div className={`w-12 h-12 rounded-lg flex flex-col items-center justify-center ${
-                    reward.claimed ? 'bg-border-strong' : reward.unlocked ? 'bg-border-strong' : 'bg-border-strong'
-                  }`}>
-                    <span className={`text-value-sm ${reward.claimed ? 'text-text-primary' : reward.unlocked ? 'text-text-primary' : 'text-text-muted'}`}>
-                      {reward.icon}
-                    </span>
-                    <span className={`text-mini ${reward.claimed ? 'text-text-secondary' : reward.unlocked ? 'text-text-secondary' : 'text-text-muted'}`}>
-                      {reward.amount}
-                    </span>
-                  </div>
-
-                  {reward.claimed ? (
-                    <div className="w-6 h-6 bg-bg-inverse rounded-full flex items-center justify-center">
-                      <span className="text-text-inverse text-mini">[check]</span>
-                    </div>
-                  ) : reward.unlocked ? (
-                    <button className="px-3 py-1.5 bg-bg-inverse rounded-lg border border-border">
-                      <span className="text-text-inverse text-value-sm">Claim</span>
-                    </button>
-                  ) : (
-                    <div className="w-6 h-6 bg-border-strong rounded flex items-center justify-center">
-                      <span className="text-text-muted text-mini">[lock]</span>
-                    </div>
-                  )}
-                </div>
-              </div>
+              <StreakTierItem
+                key={tier.tier}
+                tier={tier.tier}
+                boosterIds={tier.boosterIds}
+                isUnlocked={streakBooster.currentTier >= tier.tier}
+                isClaimed={streakBooster.currentTier >= tier.tier}
+                isCurrent={streakBooster.currentTier === tier.tier}
+                isFirst={isFirst}
+                isLast={isLast}
+              />
             );
           })}
-
-          {streakData.currentStreak < streakData.totalRequired && (() => {
-            const nextLockedReward = streakData.ladder.find(r => !r.unlocked);
-            const levelsToGo = nextLockedReward ? nextLockedReward.level - streakData.currentStreak : 1;
-            return (
-              <div className="mt-2 bg-bg-card rounded-lg px-3 py-2 border border-border">
-                <p className="text-text-primary text-caption text-center">
-                  Win {levelsToGo} more level(s) to unlock next reward!
-                </p>
-              </div>
-            );
-          })()}
         </div>
+
+        {/* Helper Text */}
+        {streakBooster.currentTier < maxTier && (
+          <div className="px-4 pb-4">
+            <Card padding="sm" className="text-center">
+              <p className="text-caption text-text-secondary">
+                Win {maxTier - streakBooster.currentTier} more level{maxTier - streakBooster.currentTier !== 1 ? 's' : ''} to reach Max Tier!
+              </p>
+            </Card>
+          </div>
+        )}
+
+        {/* Warning */}
+        <div className="px-4 pb-6">
+          <div className="bg-bg-muted rounded-lg p-3 border border-border">
+            <p className="text-caption text-text-secondary text-center">
+              <span className="font-bold text-text-primary">Warning:</span> Losing or quitting a level resets your streak!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Play Button */}
+      <div className="p-4 border-t border-border bg-bg-card">
+        <Button
+          fullWidth
+          size="lg"
+          onClick={() => {
+            navigate('main-menu');
+            // In real app, would open level-start modal
+          }}
+        >
+          Play Level
+        </Button>
       </div>
 
       {/* Info Modal */}
       {showInfoModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-          <div className="relative w-full max-w-[320px] mx-4 rounded-2xl overflow-hidden">
-            <button
-              onClick={() => setShowInfoModal(false)}
-              className="absolute top-2 right-2 w-8 h-8 bg-bg-inverse rounded-full flex items-center justify-center z-10 border border-border"
-            >
-              <span className="text-text-inverse font-bold text-caption">X</span>
-            </button>
-
-            <div className="bg-bg-inverse py-4 px-3">
-              <h1 className="text-text-inverse text-h2 text-center">How It Works</h1>
-            </div>
-
-            <div className="bg-bg-muted p-4">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 bg-bg-inverse rounded-xl flex items-center justify-center flex-shrink-0 border border-border">
-                  <span className="text-text-inverse text-h2">[check]</span>
-                </div>
-                <div>
-                  <p className="text-text-primary text-h4">Win Levels</p>
-                  <p className="text-text-secondary text-caption">Each win increases your streak</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 bg-bg-inverse rounded-xl flex items-center justify-center flex-shrink-0 border border-border">
-                  <span className="text-text-inverse text-value">GFT</span>
-                </div>
-                <div>
-                  <p className="text-text-primary text-h4">Collect Rewards</p>
-                  <p className="text-text-secondary text-caption">Unlock boosters at each level</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 bg-border-strong rounded-xl flex items-center justify-center flex-shrink-0 border border-border">
-                  <span className="text-text-primary text-value">CHT</span>
-                </div>
-                <div>
-                  <p className="text-text-primary text-h4">Win Grand Prize</p>
-                  <p className="text-text-secondary text-caption">Complete all levels for the big reward</p>
-                </div>
-              </div>
-
-              <div className="bg-bg-page rounded-xl p-3 mb-4 border border-border">
-                <p className="text-text-primary text-caption text-center">
-                  <span className="text-text-primary font-bold">Warning:</span> Losing resets your streak!
-                </p>
-              </div>
-
-              <button
-                onClick={() => setShowInfoModal(false)}
-                className="w-full py-3 bg-bg-inverse rounded-xl border border-border"
-              >
-                <span className="text-text-inverse text-h3">Got It!</span>
-              </button>
-            </div>
-          </div>
-        </div>
+        <InfoModal onClose={() => setShowInfoModal(false)} />
       )}
     </div>
+  );
+}
+
+/**
+ * Info Modal Component
+ */
+function InfoModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <Card padding="none" className="w-full max-w-[320px] overflow-hidden">
+        {/* Header */}
+        <div className="bg-bg-inverse py-4 px-3 relative">
+          <h2 className="text-text-inverse text-h2 text-center">How It Works</h2>
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 w-8 h-8 bg-bg-muted rounded-full flex items-center justify-center border border-border hover:opacity-80 transition-colors"
+          >
+            <span className="text-text-primary font-bold text-caption">X</span>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-4">
+          <div className="flex items-start gap-4 mb-4">
+            <div className="w-12 h-12 bg-bg-inverse rounded-xl flex items-center justify-center flex-shrink-0">
+              <CheckIcon className="w-6 h-6 text-text-inverse" />
+            </div>
+            <div>
+              <p className="text-h4 text-text-primary">Win Levels</p>
+              <p className="text-caption text-text-secondary">
+                Each consecutive win increases your streak tier
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4 mb-4">
+            <div className="w-12 h-12 bg-bg-inverse rounded-xl flex items-center justify-center flex-shrink-0">
+              <FireIcon className="w-6 h-6 text-text-inverse" />
+            </div>
+            <div>
+              <p className="text-h4 text-text-primary">Unlock Boosters</p>
+              <p className="text-caption text-text-secondary">
+                Higher tiers grant more pre-level boosters
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4 mb-4">
+            <div className="w-12 h-12 bg-bg-muted rounded-xl flex items-center justify-center flex-shrink-0 border border-border">
+              <TrophyIcon className="w-6 h-6 text-text-secondary" />
+            </div>
+            <div>
+              <p className="text-h4 text-text-primary">Claim Rewards</p>
+              <p className="text-caption text-text-secondary">
+                Reach max tier for the Grand Prize!
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-bg-muted rounded-xl p-3 mb-4 border border-border">
+            <p className="text-caption text-text-secondary text-center">
+              <span className="font-bold text-text-primary">Warning:</span>{' '}
+              Losing or quitting resets your streak to Tier 0!
+            </p>
+          </div>
+
+          <Button fullWidth onClick={onClose}>
+            Got It!
+          </Button>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+// Icons
+function FireIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" />
+    </svg>
+  );
+}
+
+function TrophyIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 5H17V3H7V5H5C3.9 5 3 5.9 3 7V8C3 10.55 4.92 12.63 7.39 12.94C8.02 14.44 9.37 15.57 11 15.9V19H8V21H16V19H13V15.9C14.63 15.57 15.98 14.44 16.61 12.94C19.08 12.63 21 10.55 21 8V7C21 5.9 20.1 5 19 5ZM5 8V7H7V10.82C5.84 10.4 5 9.3 5 8ZM19 8C19 9.3 18.16 10.4 17 10.82V7H19V8Z" />
+    </svg>
+  );
+}
+
+function LockIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM15.1 8H8.9V6C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8Z" />
+    </svg>
+  );
+}
+
+function CheckIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+      <path d="M5 13L9 17L19 7" />
+    </svg>
   );
 }

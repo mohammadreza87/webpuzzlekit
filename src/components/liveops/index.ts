@@ -2,7 +2,7 @@ export { RoyalPassPage } from './RoyalPassPage';
 export { SkyRacePage } from './SkyRacePage';
 export { KingsCupPage } from './KingsCupPage';
 export { TeamChestPage } from './TeamChestPage';
-export { BookOfTreasurePage } from './BookOfTreasurePage';
+export { ClefCollectionPage } from './ClefCollectionPage';
 export { LightningRushPage } from './LightningRushPage';
 export { LavaQuestPage } from './LavaQuestPage';
 export { AlbumPage } from './AlbumPage';

@@ -3,3 +3,4 @@ export * from './initialData';
 export * from './registry';
 export * from './game.config';
 export * from './features';
+export * from './winningStreak.config';

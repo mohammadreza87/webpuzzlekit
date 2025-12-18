@@ -86,7 +86,7 @@
     "skyRace": "Sky Race",
     "kingsCup": "King's Cup",
     "teamChest": "Team Chest",
-    "bookOfTreasure": "Book of Treasure",
+    "bookOfTreasure": "Clef Collection",
     "lightningRush": "Lightning Rush",
     "lavaQuest": "Lava Quest",
     "missionControl": "Mission Control",
@@ -142,8 +142,8 @@
       "description": "Work with your team to unlock rewards"
     },
     "bookOfTreasure": {
-      "name": "Book of Treasure",
-      "description": "Complete chapters to find treasure"
+      "name": "Clef Collection",
+      "description": "Collect clefs to earn milestone rewards"
     },
     "lightningRush": {
       "name": "Lightning Rush",
