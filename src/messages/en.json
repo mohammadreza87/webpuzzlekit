@@ -255,7 +255,7 @@
     "parentalControl": "Parental Control",
     "termsPrivacy": "Terms & Privacy",
     "adminPanel": "Admin Panel",
-    "version": "Puzzle Kit v1.0.0",
+    "version": "Puzzle Kit v1.1.0",
     "signInToSave": "Sign in to save your progress and play on multiple devices!",
     "signInWithFacebook": "Sign in with Facebook",
     "signInWithGoogle": "Sign in with Google",
@@ -370,7 +370,7 @@
     "liveopsEvents": "LiveOps Events",
     "themeColors": "Theme Colors",
     "resetAllToDefaults": "Reset All to Defaults",
-    "version": "Puzzle Kit Admin v1.0"
+    "version": "Puzzle Kit Admin v1.1"
   },
   "featureDisabled": {
     "title": "Feature Disabled",

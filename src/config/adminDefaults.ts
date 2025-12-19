@@ -70,13 +70,11 @@ export interface ThemeConfig {
   goldDark: string;
 }
 
-// Default tabs (current configuration)
+// Default tabs (current configuration) - Shop, Home, Leaderboard
 export const defaultTabs: TabConfig[] = [
-  { id: 'areas', icon: '/icons/Star-Filled.svg', label: 'Areas', page: 'area-tasks', enabled: false },
-  { id: 'leaderboard', icon: '/icons/Medal.svg', label: 'Leaderboard', page: 'leaderboard', enabled: false },
+  { id: 'shop', icon: '/icons/Shopping-2.svg', label: 'Shop', page: 'shop', enabled: true },
   { id: 'home', icon: '/icons/Home.svg', label: 'Home', page: 'main-menu', enabled: true },
-  { id: 'team', icon: '/icons/2User.svg', label: 'Team', page: 'team', enabled: false },
-  { id: 'collection', icon: '/icons/Category.svg', label: 'Collection', page: 'collection', enabled: false },
+  { id: 'leaderboard', icon: '/icons/Medal.svg', label: 'Leaderboard', page: 'leaderboard', enabled: true },
 ];
 
 // All available tabs that can be added

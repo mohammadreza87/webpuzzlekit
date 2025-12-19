@@ -15,7 +15,7 @@ import type { Booster, ShopItem, DailyReward, Reward } from '@/types';
 
 export const gameInfo = {
   name: 'Puzzle Kit',
-  version: '1.0.0',
+  version: '1.1.0',
   description: 'A customizable puzzle game template',
 } as const;
 
