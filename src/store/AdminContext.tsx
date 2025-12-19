@@ -44,7 +44,7 @@ type AdminAction =
 // Default state with preset
 const defaultState: AdminState = {
   ...defaultAdminConfig,
-  themePresetId: 'grayscale',
+  themePresetId: 'amanotes',
 };
 
 // Reducer
@@ -200,8 +200,8 @@ function loadConfig(): AdminState {
         enabledEvents: parsed.enabledEvents || defaultAdminConfig.enabledEvents,
         eventPlacement: parsed.eventPlacement || defaultEventPlacement,
         theme: { ...defaultAdminConfig.theme, ...parsed.theme },
-        themePresetId: parsed.themePresetId || 'grayscale',
-        showAreaButton: parsed.showAreaButton ?? true,
+        themePresetId: parsed.themePresetId || 'amanotes',
+        showAreaButton: parsed.showAreaButton ?? false,
         deviceId: parsed.deviceId || defaultDeviceId,
       };
     }
