@@ -136,7 +136,7 @@ export const defaultAdminConfig: AdminConfig = {
   enabledEvents: defaultEnabledEvents,
   eventPlacement: defaultEventPlacement,
   theme: defaultTheme,
-  showAreaButton: true,
+  showAreaButton: false,
   deviceId: defaultDeviceId,
 };
 

@@ -24,7 +24,7 @@ test.describe('Loading Screen', () => {
 
     // Wait for main content to appear (loading complete)
     await page.waitForLoadState('networkidle');
-    await expect(page.locator('text=Level')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('text=PLAY')).toBeVisible({ timeout: 10000 });
 
     // Loading screen should be removed from DOM after fade animation completes
     const loadingScreen = page.locator('[role="progressbar"]');
@@ -48,8 +48,8 @@ test.describe('App Loading', () => {
     // Wait for app to be interactive
     await page.waitForLoadState('networkidle');
 
-    // Should see the main menu content
-    await expect(page.locator('text=Level')).toBeVisible({ timeout: 10000 });
+    // Should see the main menu content (PLAY button in roadmap view)
+    await expect(page.locator('text=PLAY')).toBeVisible({ timeout: 10000 });
   });
 
   test('shows player resources in header', async ({ page }) => {
@@ -160,7 +160,7 @@ test.describe('Page Navigation', () => {
     // Click X button to close
     await page.click('button:has-text("X")');
 
-    // Should be back at main menu
-    await expect(page.locator('text=Level')).toBeVisible({ timeout: 5000 });
+    // Should be back at main menu (PLAY button in roadmap view)
+    await expect(page.locator('text=PLAY')).toBeVisible({ timeout: 5000 });
   });
 });
