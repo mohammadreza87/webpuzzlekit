@@ -79,7 +79,7 @@ export function KingsCupPage() {
               <div
                 className={`
                   w-8 h-8 rounded-full flex items-center justify-center font-bold text-caption
-                  ${player.rank <= 3 ? 'bg-bg-inverse text-text-inverse' : 'bg-bg-page text-text-text-secondary'}
+                  ${player.rank <= 3 ? 'bg-bg-inverse text-text-inverse' : 'bg-bg-page text-text-secondary'}
                 `}
               >
                 {player.rank}

@@ -62,7 +62,7 @@ export function SkyRacePage() {
               <div
                 className={`
                   w-8 h-8 rounded-full flex items-center justify-center font-bold text-caption
-                  ${p.position <= 3 ? 'bg-bg-inverse text-text-inverse' : 'bg-bg-page text-text-text-secondary'}
+                  ${p.position <= 3 ? 'bg-bg-inverse text-text-inverse' : 'bg-bg-page text-text-secondary'}
                 `}
               >
                 {p.position}

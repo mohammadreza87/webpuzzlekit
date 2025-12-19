@@ -55,7 +55,7 @@ export function TeamChestPage() {
               <div
                 className={`
                   w-8 h-8 rounded-full flex items-center justify-center
-                  ${milestone.reached ? 'bg-bg-inverse text-text-inverse' : 'bg-bg-page text-text-text-secondary'}
+                  ${milestone.reached ? 'bg-bg-inverse text-text-inverse' : 'bg-bg-page text-text-secondary'}
                 `}
               >
                 {milestone.reached ? <CheckIcon /> : index + 1}
