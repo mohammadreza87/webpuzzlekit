@@ -287,7 +287,7 @@ export const MODAL_REGISTRY = {
   'team-info': { id: 'team-info', name: 'Team Info' },
   'member-profile': { id: 'member-profile', name: 'Member Profile' },
   'weekly-contest-info': { id: 'weekly-contest-info', name: 'Weekly Contest Info' },
-  'butlers-gift-info': { id: 'butlers-gift-info', name: "Butler's Gift Info" },
+  'harmonic-blessing-info': { id: 'harmonic-blessing-info', name: 'Harmonic Blessing Info' },
   'super-booster-info': { id: 'super-booster-info', name: 'Super Booster Info' },
 } as const;
 

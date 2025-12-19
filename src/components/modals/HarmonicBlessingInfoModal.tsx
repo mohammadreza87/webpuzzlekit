@@ -5,7 +5,7 @@ import { useNavigation, useWinningStreak } from '@/store';
 import { Button } from '@/components/base';
 import { winningStreakConfig, streakTiers } from '@/config';
 
-interface ButlersGiftInfoModalProps {
+interface HarmonicBlessingInfoModalProps {
   onAnimatedClose?: () => void;
 }
 
@@ -15,7 +15,7 @@ interface ButlersGiftInfoModalProps {
  * Explains Module 1: Streak Booster Ladder
  * Shows how consecutive wins earn bonus boosters at the start of each level.
  */
-export function ButlersGiftInfoModal({ onAnimatedClose }: ButlersGiftInfoModalProps) {
+export function HarmonicBlessingInfoModal({ onAnimatedClose }: HarmonicBlessingInfoModalProps) {
   const { closeModal } = useNavigation();
   const { state: winningStreakState } = useWinningStreak();
   const { streakBooster } = winningStreakState;
@@ -32,14 +32,11 @@ export function ButlersGiftInfoModal({ onAnimatedClose }: ButlersGiftInfoModalPr
   return (
     <div className="w-full max-w-[320px] bg-bg-card rounded-2xl border-2 border-border overflow-hidden">
       {/* Progress bar at top */}
-      <div className="bg-bg-muted h-2 relative">
+      <div className="bg-bg-muted h-2">
         <div
           className="h-full bg-bg-inverse transition-all"
           style={{ width: `${(streakBooster.streakCount / maxTier) * 100}%` }}
         />
-        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-text-muted font-medium">
-          {streakBooster.streakCount}/{maxTier}
-        </span>
       </div>
 
       {/* Header */}

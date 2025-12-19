@@ -13,7 +13,7 @@ interface LevelFailedModalProps {
  * Level Failed Modal
  *
  * Shows when player loses a level.
- * Warns about losing Butler's Gift streak and Book of Treasure items.
+ * Warns about losing Harmonic Blessing streak and Book of Treasure items.
  * Offers options to continue with coins or quit.
  */
 export function LevelFailedModal({ onAnimatedClose }: LevelFailedModalProps) {

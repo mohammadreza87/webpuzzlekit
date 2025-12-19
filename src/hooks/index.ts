@@ -2,6 +2,10 @@
 export { useTimer } from './useTimer';
 export { useModalAnimation, useTabAnimation, useSlideAnimation } from './useGsapAnimation';
 
+// Asset loading hooks
+export { useAssetPreload } from './useAssetPreload';
+export type { AssetPreloadState } from './useAssetPreload';
+
 // Simplified state hooks (recommended for most use cases)
 export { usePlayer } from './usePlayer';
 export type { UsePlayerReturn } from './usePlayer';

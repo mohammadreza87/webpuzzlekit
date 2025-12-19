@@ -218,7 +218,7 @@ export function MainMenu() {
       </div>
 
       {/* Bottom Navigation Bar */}
-      <BottomNavigation activePage="home" />
+      <BottomNavigation activePage="main-menu" />
     </div>
   );
 }

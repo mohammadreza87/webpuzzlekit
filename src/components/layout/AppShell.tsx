@@ -5,13 +5,14 @@ import dynamic from 'next/dynamic';
 import gsap from 'gsap';
 import { GameProvider, NavigationProvider, AdminProvider, WinningStreakProvider, useNavigation, useAdmin, useGame } from '@/store';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
+import { useAssetPreload } from '@/hooks';
 
 // Eager imports - frequently accessed pages
 import { MainMenu } from '@/components/menus/MainMenu';
 import { GameplayPage } from '@/components/menus/GameplayPage';
 
 // Loading skeleton for lazy-loaded pages
-import { PageSkeleton } from '@/components/shared';
+import { PageSkeleton, LoadingScreen } from '@/components/shared';
 
 // Modal manager
 import { ModalManager } from '@/components/modals/ModalManager';
@@ -155,6 +156,53 @@ function WinningStreakWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
+function LoadingWrapper({ children }: { children: React.ReactNode }) {
+  const { isReady, progress } = useAssetPreload();
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const loadingRef = React.useRef<HTMLDivElement>(null);
+  const [showLoading, setShowLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (isReady && showLoading && contentRef.current && loadingRef.current) {
+      // Fade out loading screen and fade in content
+      const tl = gsap.timeline({
+        onComplete: () => setShowLoading(false),
+      });
+      tl.to(loadingRef.current, {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+      tl.fromTo(
+        contentRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        '-=0.1'
+      );
+    }
+  }, [isReady, showLoading]);
+
+  return (
+    <div className="flex flex-col h-full relative">
+      {/* Loading screen - positioned absolutely */}
+      {showLoading && (
+        <div ref={loadingRef} className="absolute inset-0 z-50">
+          <LoadingScreen progress={progress} showProgress={true} />
+        </div>
+      )}
+
+      {/* Main content - always in the DOM for proper layout */}
+      <div
+        ref={contentRef}
+        className="flex-1 flex flex-col h-full"
+        style={{ opacity: isReady && !showLoading ? undefined : 0 }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function PhoneFrameWrapper({ children }: { children: React.ReactNode }) {
   const { currentDevice } = useAdmin();
 
@@ -175,13 +223,15 @@ export function AppShell() {
   return (
     <AdminProvider>
       <PhoneFrameWrapper>
-        <GameProvider>
-          <NavigationProvider>
-            <WinningStreakWrapper>
-              <PageRenderer />
-            </WinningStreakWrapper>
-          </NavigationProvider>
-        </GameProvider>
+        <LoadingWrapper>
+          <GameProvider>
+            <NavigationProvider>
+              <WinningStreakWrapper>
+                <PageRenderer />
+              </WinningStreakWrapper>
+            </NavigationProvider>
+          </GameProvider>
+        </LoadingWrapper>
       </PhoneFrameWrapper>
     </AdminProvider>
   );

@@ -48,7 +48,7 @@ const ProfileModal = dynamic(() => import('./ProfileModal').then(m => ({ default
 const TeamInfoModal = dynamic(() => import('./TeamInfoModal').then(m => ({ default: m.TeamInfoModal })), { loading: () => <ModalSkeleton /> });
 const MemberProfileModal = dynamic(() => import('./MemberProfileModal').then(m => ({ default: m.MemberProfileModal })), { loading: () => <ModalSkeleton /> });
 const WeeklyContestInfoModal = dynamic(() => import('./WeeklyContestInfoModal').then(m => ({ default: m.WeeklyContestInfoModal })), { loading: () => <ModalSkeleton /> });
-const ButlersGiftInfoModal = dynamic(() => import('./ButlersGiftInfoModal').then(m => ({ default: m.ButlersGiftInfoModal })), { loading: () => <ModalSkeleton /> });
+const HarmonicBlessingInfoModal = dynamic(() => import('./HarmonicBlessingInfoModal').then(m => ({ default: m.HarmonicBlessingInfoModal })), { loading: () => <ModalSkeleton /> });
 const SuperBoosterInfoModal = dynamic(() => import('./SuperBoosterInfoModal').then(m => ({ default: m.SuperBoosterInfoModal })), { loading: () => <ModalSkeleton /> });
 
 const modalComponents: Partial<Record<NonNullable<ModalId>, React.ComponentType<{ onAnimatedClose?: () => void }>>> = {
@@ -75,7 +75,7 @@ const modalComponents: Partial<Record<NonNullable<ModalId>, React.ComponentType<
   'team-info': TeamInfoModal,
   'member-profile': MemberProfileModal,
   'weekly-contest-info': WeeklyContestInfoModal,
-  'butlers-gift-info': ButlersGiftInfoModal,
+  'harmonic-blessing-info': HarmonicBlessingInfoModal,
   'super-booster-info': SuperBoosterInfoModal,
 };
 

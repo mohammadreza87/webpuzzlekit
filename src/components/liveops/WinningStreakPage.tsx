@@ -16,7 +16,7 @@ type ViewState = 'intro' | 'ladder';
  * for consecutive level completions. Boosters accumulate up to a maximum tier
  * and reset completely upon level failure.
  *
- * Based on Royal Match's Butler's Gift feature.
+ * Based on Royal Match's Harmonic Blessing feature.
  */
 export function WinningStreakPage() {
   const { navigate } = useNavigation();

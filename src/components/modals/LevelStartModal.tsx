@@ -44,7 +44,7 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
   };
 
   const handleStreakGiftInfo = () => {
-    openModal('butlers-gift-info');
+    openModal('harmonic-blessing-info');
   };
 
   const handleSuperBoosterInfo = () => {

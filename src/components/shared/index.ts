@@ -5,3 +5,5 @@ export { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
 export { PageSkeleton } from './PageSkeleton';
 export { FeatureDisabled } from './FeatureDisabled';
 export { LocaleSwitcher } from './LocaleSwitcher';
+export { LoadingScreen } from './LoadingScreen';
+export type { LoadingScreenProps } from './LoadingScreen';

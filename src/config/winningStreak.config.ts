@@ -9,7 +9,7 @@
  * - Module 2: Collectible Milestone Event (time-limited item collection)
  * - Module 3: Super Booster Unlock (enhanced booster from cumulative wins)
  *
- * Reference: Royal Match (Butler's Gift, Book of Treasure, Super Light Ball)
+ * Reference: Royal Match (Harmonic Blessing, Book of Treasure, Super Light Ball)
  */
 
 import type {
@@ -26,7 +26,7 @@ import type {
 // =============================================================================
 
 /**
- * Streak tier definitions (Royal Match Butler's Gift reference)
+ * Streak tier definitions (Harmonic Blessing reference)
  * Each tier adds more boosters to the player's starting inventory
  *
  * Tier 0: No boosters (starting state)

@@ -7,6 +7,40 @@ import { test, expect } from '@playwright/test';
  * Run with: npm run test
  */
 
+test.describe('Loading Screen', () => {
+  test('loading screen appears and has accessibility attributes', async ({ page }) => {
+    // Navigate without waiting for load to complete
+    await page.goto('/');
+
+    // Loading screen should have proper ARIA attributes
+    const loadingScreen = page.locator('[role="progressbar"]');
+    await expect(loadingScreen).toHaveAttribute('aria-label', 'Loading application');
+    await expect(loadingScreen).toHaveAttribute('aria-valuemin', '0');
+    await expect(loadingScreen).toHaveAttribute('aria-valuemax', '100');
+  });
+
+  test('loading screen transitions to main content', async ({ page }) => {
+    await page.goto('/');
+
+    // Wait for main content to appear (loading complete)
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('text=Level')).toBeVisible({ timeout: 10000 });
+
+    // Loading screen should be removed from DOM after fade animation completes
+    const loadingScreen = page.locator('[role="progressbar"]');
+    await expect(loadingScreen).toHaveCount(0, { timeout: 5000 });
+  });
+
+  test('main content is visible after loading', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    // Main menu should be fully visible with opacity 1
+    const mainContent = page.locator('#app-content');
+    await expect(mainContent).toBeVisible({ timeout: 10000 });
+  });
+});
+
 test.describe('App Loading', () => {
   test('app loads and shows main menu', async ({ page }) => {
     await page.goto('/');
@@ -38,20 +72,20 @@ test.describe('Bottom Navigation', () => {
     const bottomNav = page.locator('.border-t.border-border').last();
     await expect(bottomNav).toBeVisible();
 
-    // Should have navigation buttons
+    // Should have navigation buttons (3 default tabs: Shop, Home, Leaderboard)
     const navButtons = bottomNav.locator('button');
-    await expect(navButtons).toHaveCount(5); // 5 default tabs
+    await expect(navButtons).toHaveCount(3);
   });
 
-  test('clicking team tab navigates to team page', async ({ page }) => {
+  test('clicking shop tab navigates to shop page', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Click on Team tab (has "Team" label)
-    await page.click('button:has-text("Team")');
+    // Click on Shop tab
+    await page.click('button:has-text("Shop")');
 
-    // Should navigate to teams page
-    await expect(page.locator('text=Teams')).toBeVisible({ timeout: 5000 });
+    // Should navigate to shop page - check for heading specifically
+    await expect(page.getByRole('heading', { name: 'Shop' })).toBeVisible({ timeout: 5000 });
   });
 
   test('clicking leaderboard tab navigates to leaderboard', async ({ page }) => {
@@ -61,8 +95,8 @@ test.describe('Bottom Navigation', () => {
     // Click on Leaderboard tab
     await page.click('button:has-text("Leaderboard")');
 
-    // Should show leaderboard
-    await expect(page.locator('text=Leaderboard')).toBeVisible({ timeout: 5000 });
+    // Should show leaderboard - check for heading specifically
+    await expect(page.getByRole('heading', { name: 'Leaderboard' })).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -92,14 +126,14 @@ test.describe('Modal System', () => {
 });
 
 test.describe('Feature Flag Integration', () => {
-  test('main menu shows event buttons when enabled', async ({ page }) => {
+  test('main menu shows clef collection bar when enabled', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // There should be event buttons on the sides (with timer displays)
-    // These are the LiveOps event buttons
-    const mainContent = page.locator('.flex-1.relative');
-    await expect(mainContent).toBeVisible();
+    // The Clef Collection progress bar should be visible
+    // It's the main LiveOps event shown in the default config
+    const clefBar = page.locator('button').filter({ hasText: /\/100/ });
+    await expect(clefBar).toBeVisible();
   });
 });
 
@@ -111,8 +145,8 @@ test.describe('Page Navigation', () => {
     // Click on coins display (has $ icon)
     await page.click('button:has-text("$")');
 
-    // Should navigate to shop
-    await expect(page.locator('text=Shop')).toBeVisible({ timeout: 5000 });
+    // Should navigate to shop - check for heading specifically
+    await expect(page.getByRole('heading', { name: 'Shop' })).toBeVisible({ timeout: 5000 });
   });
 
   test('can navigate back to main menu from shop', async ({ page }) => {
@@ -121,7 +155,7 @@ test.describe('Page Navigation', () => {
 
     // Go to shop
     await page.click('button:has-text("$")');
-    await expect(page.locator('text=Shop')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('heading', { name: 'Shop' })).toBeVisible({ timeout: 5000 });
 
     // Click X button to close
     await page.click('button:has-text("X")');
