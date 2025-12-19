@@ -104,7 +104,7 @@ export const themePresets: Record<string, ThemePreset> = {
 };
 
 // Default theme
-export const defaultThemePreset = themePresets.amanotes;
+export const defaultThemePreset = themePresets.wireframe;
 
 // Get preset by ID
 export function getThemePreset(id: string): ThemePreset {
