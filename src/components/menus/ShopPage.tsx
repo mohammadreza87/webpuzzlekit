@@ -23,7 +23,7 @@ export function ShopPage() {
   const { coinPacks, specialOfferItems, princeItems, queenItems } = shopMockData;
 
   return (
-    <div className="flex flex-col h-full bg-bg-inverse">
+    <div className="flex flex-col h-full bg-bg-page">
       {/* Header */}
       <div className="flex items-center justify-between px-2 py-2 bg-bg-muted border-b border-border">
         {/* Coins display */}

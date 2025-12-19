@@ -59,7 +59,7 @@ export function MemberProfileModal({ onAnimatedClose }: MemberProfileModalProps)
       </div>
 
       {/* Profile Card */}
-      <div className="bg-bg-inverse p-3">
+      <div className="bg-bg-muted p-3">
         <div className="bg-bg-page rounded-xl border-2 border-border p-3">
           <div className="flex items-start gap-3">
             {/* Avatar */}
@@ -112,7 +112,7 @@ export function MemberProfileModal({ onAnimatedClose }: MemberProfileModalProps)
       </div>
 
       {/* Royal League Stats */}
-      <div className="bg-bg-inverse px-3 pb-3">
+      <div className="bg-bg-muted px-3 pb-3">
         {/* Ribbon Title */}
         <div className="flex justify-center -mt-1 mb-3">
           <div className="relative">
@@ -147,7 +147,7 @@ export function MemberProfileModal({ onAnimatedClose }: MemberProfileModalProps)
       </div>
 
       {/* General Stats */}
-      <div className="bg-bg-inverse px-3 pb-4 rounded-b-2xl">
+      <div className="bg-bg-muted px-3 pb-4 rounded-b-2xl">
         {/* Ribbon Title */}
         <div className="flex justify-center mb-3">
           <div className="relative">
