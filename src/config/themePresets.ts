@@ -29,6 +29,15 @@ export const themePresets: Record<string, ThemePreset> = {
     brandMuted: '#FCE4F2',    // Light pink
     bgInverse: '#9B30FF',     // Amanotes purple
   },
+  // Amanotes vibrant palette - bold & colorful
+  amanotes2: {
+    id: 'amanotes2',
+    name: 'Amanotes Vibrant',
+    brandPrimary: '#ff006e',  // Neon Pink - explosive vibrance
+    brandHover: '#fb5607',    // Blaze Orange - fierce & adventurous
+    brandMuted: '#fff4e6',    // Light amber tint
+    bgInverse: '#8338ec',     // Blue Violet - bold creative spirit
+  },
   // Standard wireframe - medium contrast
   wireframe: {
     id: 'wireframe',
