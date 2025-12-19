@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import gsap from 'gsap';
 import { GameProvider, NavigationProvider, AdminProvider, WinningStreakProvider, useNavigation, useAdmin, useGame } from '@/store';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
-import { useAssetPreload } from '@/hooks';
+import { useAssetPreload, useBackgroundPreload } from '@/hooks';
 
 // Eager imports - frequently accessed pages (default nav: Shop, Home, Leaderboard)
 import { MainMenu } from '@/components/menus/MainMenu';
@@ -161,6 +161,9 @@ function LoadingWrapper({ children }: { children: React.ReactNode }) {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const loadingRef = React.useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = React.useState(true);
+
+  // Start preloading lazy pages in background after initial load
+  useBackgroundPreload(isReady);
 
   React.useEffect(() => {
     if (isReady && showLoading && contentRef.current && loadingRef.current) {

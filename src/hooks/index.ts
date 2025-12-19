@@ -5,6 +5,7 @@ export { useModalAnimation, useTabAnimation, useSlideAnimation } from './useGsap
 // Asset loading hooks
 export { useAssetPreload } from './useAssetPreload';
 export type { AssetPreloadState } from './useAssetPreload';
+export { useBackgroundPreload } from './useBackgroundPreload';
 
 // Simplified state hooks (recommended for most use cases)
 export { usePlayer } from './usePlayer';
