@@ -31,7 +31,7 @@ export function BottomNavigation({ activePage }: BottomNavigationProps) {
 
   return (
     <div className="bg-bg-card border-t border-border">
-      <div className="flex justify-center items-center gap-8 py-2 px-4">
+      <div className="flex justify-center items-center gap-4 py-2">
         {enabledTabs.map((tab) => (
           <NavButton
             key={tab.id}
