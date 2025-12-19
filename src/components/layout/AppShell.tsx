@@ -7,9 +7,13 @@ import { GameProvider, NavigationProvider, AdminProvider, WinningStreakProvider,
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 import { useAssetPreload } from '@/hooks';
 
-// Eager imports - frequently accessed pages
+// Eager imports - frequently accessed pages (default nav: Shop, Home, Leaderboard)
 import { MainMenu } from '@/components/menus/MainMenu';
 import { GameplayPage } from '@/components/menus/GameplayPage';
+import { ShopPage } from '@/components/menus/ShopPage';
+import { LeaderboardPage } from '@/components/menus/LeaderboardPage';
+import { SettingsPage } from '@/components/menus/SettingsPage';
+import { ClefCollectionPage } from '@/components/liveops/ClefCollectionPage';
 
 // Loading skeleton for lazy-loaded pages
 import { PageSkeleton, LoadingScreen } from '@/components/shared';
@@ -22,12 +26,9 @@ import { ExportButton } from '@/components/shared';
 
 import type { PageId } from '@/types';
 
-// Lazy-loaded pages - code split for better initial load
-const ShopPage = dynamic(() => import('@/components/menus/ShopPage').then(m => ({ default: m.ShopPage })), { loading: () => <PageSkeleton /> });
-const SettingsPage = dynamic(() => import('@/components/menus/SettingsPage').then(m => ({ default: m.SettingsPage })), { loading: () => <PageSkeleton /> });
+// Lazy-loaded pages - less frequently accessed
 const TeamPage = dynamic(() => import('@/components/menus/TeamPage').then(m => ({ default: m.TeamPage })), { loading: () => <PageSkeleton /> });
 const InboxPage = dynamic(() => import('@/components/menus/InboxPage').then(m => ({ default: m.InboxPage })), { loading: () => <PageSkeleton /> });
-const LeaderboardPage = dynamic(() => import('@/components/menus/LeaderboardPage').then(m => ({ default: m.LeaderboardPage })), { loading: () => <PageSkeleton /> });
 const DailyRewardsPage = dynamic(() => import('@/components/menus/DailyRewardsPage').then(m => ({ default: m.DailyRewardsPage })), { loading: () => <PageSkeleton /> });
 const ProfilePage = dynamic(() => import('@/components/menus/ProfilePage').then(m => ({ default: m.ProfilePage })), { loading: () => <PageSkeleton /> });
 const FriendsPage = dynamic(() => import('@/components/menus/FriendsPage').then(m => ({ default: m.FriendsPage })), { loading: () => <PageSkeleton /> });
@@ -40,7 +41,6 @@ const RoyalPassPage = dynamic(() => import('@/components/liveops/RoyalPassPage')
 const SkyRacePage = dynamic(() => import('@/components/liveops/SkyRacePage').then(m => ({ default: m.SkyRacePage })), { loading: () => <PageSkeleton /> });
 const KingsCupPage = dynamic(() => import('@/components/liveops/KingsCupPage').then(m => ({ default: m.KingsCupPage })), { loading: () => <PageSkeleton /> });
 const TeamChestPage = dynamic(() => import('@/components/liveops/TeamChestPage').then(m => ({ default: m.TeamChestPage })), { loading: () => <PageSkeleton /> });
-const ClefCollectionPage = dynamic(() => import('@/components/liveops/ClefCollectionPage').then(m => ({ default: m.ClefCollectionPage })), { loading: () => <PageSkeleton /> });
 const LightningRushPage = dynamic(() => import('@/components/liveops/LightningRushPage').then(m => ({ default: m.LightningRushPage })), { loading: () => <PageSkeleton /> });
 const LavaQuestPage = dynamic(() => import('@/components/liveops/LavaQuestPage').then(m => ({ default: m.LavaQuestPage })), { loading: () => <PageSkeleton /> });
 const MissionControlPage = dynamic(() => import('@/components/liveops/MissionControlPage').then(m => ({ default: m.MissionControlPage })), { loading: () => <PageSkeleton /> });
