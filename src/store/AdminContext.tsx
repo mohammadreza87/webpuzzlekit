@@ -6,9 +6,12 @@ import {
   type TabConfig,
   type ThemeConfig,
   type EventPlacement,
+  type DevicePreset,
   defaultAdminConfig,
   allAvailableTabs,
   defaultEventPlacement,
+  devicePresets,
+  defaultDeviceId,
   ADMIN_CONFIG_KEY,
 } from '@/config/adminDefaults';
 import {
@@ -35,6 +38,7 @@ type AdminAction =
   | { type: 'UPDATE_THEME'; payload: Partial<ThemeConfig> }
   | { type: 'SET_THEME_PRESET'; payload: string }
   | { type: 'TOGGLE_AREA_BUTTON'; payload: boolean }
+  | { type: 'SET_DEVICE'; payload: string }
   | { type: 'RESET_TO_DEFAULTS' };
 
 // Default state with preset
@@ -145,6 +149,9 @@ function adminReducer(state: AdminState, action: AdminAction): AdminState {
     case 'TOGGLE_AREA_BUTTON':
       return { ...state, showAreaButton: action.payload };
 
+    case 'SET_DEVICE':
+      return { ...state, deviceId: action.payload };
+
     case 'RESET_TO_DEFAULTS':
       return { ...defaultState };
 
@@ -158,6 +165,7 @@ interface AdminContextValue {
   config: AdminState;
   enabledTabs: TabConfig[];
   currentPreset: ThemePreset;
+  currentDevice: DevicePreset;
   updateTabs: (tabs: TabConfig[]) => void;
   toggleTab: (tabId: string, enabled: boolean) => void;
   reorderTabs: (tabs: TabConfig[]) => void;
@@ -167,6 +175,7 @@ interface AdminContextValue {
   isEventEnabled: (eventId: string) => boolean;
   updateTheme: (theme: Partial<ThemeConfig>) => void;
   setThemePreset: (presetId: string) => void;
+  setDevice: (deviceId: string) => void;
   toggleAreaButton: (show: boolean) => void;
   resetToDefaults: () => void;
 }
@@ -193,6 +202,7 @@ function loadConfig(): AdminState {
         theme: { ...defaultAdminConfig.theme, ...parsed.theme },
         themePresetId: parsed.themePresetId || 'grayscale',
         showAreaButton: parsed.showAreaButton ?? true,
+        deviceId: parsed.deviceId || defaultDeviceId,
       };
     }
   } catch (e) {
@@ -284,6 +294,9 @@ export function AdminProvider({ children }: AdminProviderProps) {
   // Get current theme preset
   const currentPreset = themePresets[state.themePresetId] || defaultThemePreset;
 
+  // Get current device preset
+  const currentDevice = devicePresets.find(d => d.id === state.deviceId) || devicePresets[0];
+
   const updateTabs = useCallback((tabs: TabConfig[]) => {
     dispatch({ type: 'UPDATE_TABS', payload: tabs });
   }, []);
@@ -320,6 +333,10 @@ export function AdminProvider({ children }: AdminProviderProps) {
     dispatch({ type: 'SET_THEME_PRESET', payload: presetId });
   }, []);
 
+  const setDevice = useCallback((deviceId: string) => {
+    dispatch({ type: 'SET_DEVICE', payload: deviceId });
+  }, []);
+
   const toggleAreaButton = useCallback((show: boolean) => {
     dispatch({ type: 'TOGGLE_AREA_BUTTON', payload: show });
   }, []);
@@ -334,6 +351,7 @@ export function AdminProvider({ children }: AdminProviderProps) {
         config: state,
         enabledTabs,
         currentPreset,
+        currentDevice,
         updateTabs,
         toggleTab,
         reorderTabs,
@@ -343,6 +361,7 @@ export function AdminProvider({ children }: AdminProviderProps) {
         isEventEnabled,
         updateTheme,
         setThemePreset,
+        setDevice,
         toggleAreaButton,
         resetToDefaults,
       }}

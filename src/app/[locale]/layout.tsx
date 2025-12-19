@@ -118,9 +118,7 @@ export default async function LocaleLayout({
     <html lang={locale} dir={direction} className={fontVariables}>
       <body className={`antialiased ${getLocaleFontClass(locale)}`}>
         <NextIntlClientProvider messages={messages}>
-          <div className="phone-frame">
-            {children}
-          </div>
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>

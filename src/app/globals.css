@@ -319,8 +319,12 @@ body {
 
 /* App wrapper - responsive frame (mobile to iPad Pro) */
 .phone-frame {
+  /* Default device dimensions (iPhone 15 Pro Max) */
+  --device-width: 430px;
+  --device-height: 932px;
+
   width: 100%;
-  max-width: 1024px;
+  max-width: var(--device-width);
   height: 100vh;
   min-height: 0;
   background: var(--color-bg-page);
@@ -331,17 +335,18 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
 }
 
 /* Desktop: add frame styling */
-@media (min-width: 1025px) {
+@media (min-width: 500px) {
   .phone-frame {
-    height: calc(100vh - 40px);
-    max-height: 900px;
-    min-height: 700px;
-    border-radius: 8px;
+    height: min(calc(100vh - 40px), var(--device-height));
+    max-height: var(--device-height);
+    min-height: 600px;
+    border-radius: 24px;
     border: 2px solid var(--color-border-strong);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.2);
   }
 }
 

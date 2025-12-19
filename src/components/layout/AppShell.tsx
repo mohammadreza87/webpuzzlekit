@@ -155,16 +155,34 @@ function WinningStreakWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
+function PhoneFrameWrapper({ children }: { children: React.ReactNode }) {
+  const { currentDevice } = useAdmin();
+
+  return (
+    <div
+      className="phone-frame"
+      style={{
+        '--device-width': `${currentDevice.width}px`,
+        '--device-height': `${currentDevice.height}px`,
+      } as React.CSSProperties}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function AppShell() {
   return (
     <AdminProvider>
-      <GameProvider>
-        <NavigationProvider>
-          <WinningStreakWrapper>
-            <PageRenderer />
-          </WinningStreakWrapper>
-        </NavigationProvider>
-      </GameProvider>
+      <PhoneFrameWrapper>
+        <GameProvider>
+          <NavigationProvider>
+            <WinningStreakWrapper>
+              <PageRenderer />
+            </WinningStreakWrapper>
+          </NavigationProvider>
+        </GameProvider>
+      </PhoneFrameWrapper>
     </AdminProvider>
   );
 }

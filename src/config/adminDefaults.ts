@@ -1,6 +1,30 @@
 import type { PageId } from '@/types';
 import { EVENT_REGISTRY, getAllEventIds } from '@/config/registry';
 
+// Device preset interface
+export interface DevicePreset {
+  id: string;
+  name: string;
+  width: number;
+  height: number;
+  category: 'iphone' | 'ipad' | 'android';
+}
+
+// Available device presets
+export const devicePresets: DevicePreset[] = [
+  { id: 'iphone-15-pro', name: 'iPhone 15 Pro', width: 393, height: 852, category: 'iphone' },
+  { id: 'iphone-15-pro-max', name: 'iPhone 15 Pro Max', width: 430, height: 932, category: 'iphone' },
+  { id: 'iphone-se', name: 'iPhone SE', width: 375, height: 667, category: 'iphone' },
+  { id: 'iphone-14', name: 'iPhone 14', width: 390, height: 844, category: 'iphone' },
+  { id: 'ipad-mini', name: 'iPad Mini', width: 744, height: 1133, category: 'ipad' },
+  { id: 'ipad-pro-11', name: 'iPad Pro 11"', width: 834, height: 1194, category: 'ipad' },
+  { id: 'pixel-7', name: 'Pixel 7', width: 412, height: 915, category: 'android' },
+  { id: 'galaxy-s23', name: 'Galaxy S23', width: 360, height: 780, category: 'android' },
+];
+
+// Default device
+export const defaultDeviceId = 'iphone-15-pro-max';
+
 // Tab configuration interface
 export interface TabConfig {
   id: string;
@@ -24,6 +48,7 @@ export interface AdminConfig {
   eventPlacement: EventPlacement;
   theme: ThemeConfig;
   showAreaButton: boolean;
+  deviceId: string; // Selected device preset ID
 }
 
 // Theme configuration
@@ -114,6 +139,7 @@ export const defaultAdminConfig: AdminConfig = {
   eventPlacement: defaultEventPlacement,
   theme: defaultTheme,
   showAreaButton: true,
+  deviceId: defaultDeviceId,
 };
 
 // LocalStorage key

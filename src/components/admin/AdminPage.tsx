@@ -6,12 +6,13 @@ import { useNavigation, useAdmin } from '@/store';
 import { TabManager } from './TabManager';
 import { EventManager } from './EventManager';
 import { ThemeEditor } from './ThemeEditor';
+import { devicePresets } from '@/config/adminDefaults';
 
 type SectionId = 'tabs' | 'events' | 'theme';
 
 export function AdminPage() {
   const { navigate } = useNavigation();
-  const { config, toggleAreaButton, resetToDefaults } = useAdmin();
+  const { config, currentDevice, toggleAreaButton, setDevice, resetToDefaults } = useAdmin();
   const [expandedSection, setExpandedSection] = useState<SectionId | null>('tabs');
   const t = useTranslations('admin');
 
@@ -51,7 +52,7 @@ export function AdminPage() {
         {/* Main Menu Options */}
         <div className="bg-bg-page rounded-xl border border-border p-3">
           <p className="text-text-primary text-value mb-3">{t('mainMenuOptions')}</p>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <span className="text-text-secondary text-body-sm">{t('showAreaButton')}</span>
             <button
               onClick={() => toggleAreaButton(!config.showAreaButton)}
@@ -65,6 +66,38 @@ export function AdminPage() {
                 }`}
               />
             </button>
+          </div>
+
+          {/* Device Selector */}
+          <div className="flex items-center justify-between">
+            <span className="text-text-secondary text-body-sm">Device Size</span>
+            <select
+              value={currentDevice.id}
+              onChange={(e) => setDevice(e.target.value)}
+              className="bg-bg-muted border border-border rounded-lg px-2 py-1 text-text-primary text-body-sm"
+            >
+              <optgroup label="iPhone">
+                {devicePresets.filter(d => d.category === 'iphone').map(device => (
+                  <option key={device.id} value={device.id}>
+                    {device.name} ({device.width}×{device.height})
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="iPad">
+                {devicePresets.filter(d => d.category === 'ipad').map(device => (
+                  <option key={device.id} value={device.id}>
+                    {device.name} ({device.width}×{device.height})
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Android">
+                {devicePresets.filter(d => d.category === 'android').map(device => (
+                  <option key={device.id} value={device.id}>
+                    {device.name} ({device.width}×{device.height})
+                  </option>
+                ))}
+              </optgroup>
+            </select>
           </div>
         </div>
 
