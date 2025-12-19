@@ -20,6 +20,15 @@ export interface ThemePreset {
 }
 
 export const themePresets: Record<string, ThemePreset> = {
+  // Amanotes brand colors - pink to purple gradient
+  amanotes: {
+    id: 'amanotes',
+    name: 'Amanotes',
+    brandPrimary: '#E91E8C',  // Amanotes pink/magenta
+    brandHover: '#D11A7D',    // Darker pink
+    brandMuted: '#FCE4F2',    // Light pink
+    bgInverse: '#9B30FF',     // Amanotes purple
+  },
   // Standard wireframe - medium contrast
   wireframe: {
     id: 'wireframe',
