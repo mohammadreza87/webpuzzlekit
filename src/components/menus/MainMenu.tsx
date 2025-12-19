@@ -103,16 +103,18 @@ export function MainMenu() {
             <span className="text-text-inverse text-value">{player.lives}</span>
           </button>
 
-          {/* Stars */}
-          <button
-            onClick={() => openModal('star-info')}
-            className="flex items-center gap-1 bg-bg-muted/30 rounded-full px-2 py-1 border border-border"
-          >
-            <div className="w-5 h-5 bg-bg-muted rounded-full flex items-center justify-center border border-border">
-              <span className="text-text-primary text-mini font-bold">★</span>
-            </div>
-            <span className="text-text-inverse text-value">{player.stars}</span>
-          </button>
+          {/* Stars - only show when AREAS feature is enabled */}
+          {isFeatureEnabled('AREAS') && (
+            <button
+              onClick={() => openModal('star-info')}
+              className="flex items-center gap-1 bg-bg-muted/30 rounded-full px-2 py-1 border border-border"
+            >
+              <div className="w-5 h-5 bg-bg-muted rounded-full flex items-center justify-center border border-border">
+                <span className="text-text-primary text-mini font-bold">★</span>
+              </div>
+              <span className="text-text-inverse text-value">{player.stars}</span>
+            </button>
+          )}
         </div>
 
         {/* Settings */}

@@ -26,14 +26,14 @@ export const FEATURES = {
   /** Enable coins currency */
   COINS_SYSTEM: true,
 
-  /** Enable stars for area progression */
-  STARS_SYSTEM: true,
+  /** Enable stars for area progression (linked to AREAS) */
+  STARS_SYSTEM: false,
 
   /** Enable boosters (power-ups) */
   BOOSTERS: true,
 
   /** Enable area/decoration meta-game */
-  AREAS: true,
+  AREAS: false,
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SOCIAL FEATURES
