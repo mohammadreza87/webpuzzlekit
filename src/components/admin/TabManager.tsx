@@ -36,13 +36,13 @@ export function TabManager() {
       {/* Preview */}
       <div className="bg-bg-muted rounded-xl p-3">
         <p className="text-text-muted text-mini mb-2">Preview ({enabledCount}/5 tabs)</p>
-        <div className="flex justify-around bg-bg-inverse rounded-lg p-2">
+        <div className="flex justify-center gap-4 bg-bg-inverse rounded-lg p-2">
           {enabledTabs.map((tab) => (
-            <div key={tab.id} className="flex flex-col items-center gap-1">
+            <div key={tab.id} className="flex flex-col items-center gap-1 min-w-[60px]">
               <div className="w-8 h-8 bg-border-strong rounded-lg flex items-center justify-center border border-border">
                 <span className="text-text-primary text-mini">{tab.label.slice(0, 2)}</span>
               </div>
-              <span className="text-mini text-text-inverse">{tab.label}</span>
+              <span className="text-mini text-text-inverse whitespace-nowrap">{tab.label}</span>
             </div>
           ))}
         </div>
