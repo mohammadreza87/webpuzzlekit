@@ -39,8 +39,8 @@ export function SettingsPage() {
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {/* Toggles Panel */}
         <div className="bg-bg-page rounded-xl border-2 border-border p-4">
-          {/* Row 1: Music, Sound, Vibration */}
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-4">
+          {/* All toggles in a centered flex container */}
+          <div className="flex flex-wrap justify-center gap-3">
             <SettingsToggle
               label={t('music')}
               checked={settings.music}
@@ -62,10 +62,6 @@ export function SettingsPage() {
               onLabel={tCommon('on')}
               offLabel={tCommon('off')}
             />
-          </div>
-
-          {/* Row 2: Hint, Notifications */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             <SettingsToggle
               label={t('hint')}
               checked={true}
@@ -150,8 +146,8 @@ interface SettingsToggleProps {
 
 function SettingsToggle({ label, checked, onChange, onLabel = 'ON', offLabel = 'OFF' }: SettingsToggleProps) {
   return (
-    <div className="flex flex-col items-center">
-      <span className="text-text-primary text-value mb-2">{label}</span>
+    <div className="flex flex-col items-center w-24">
+      <span className="text-text-primary text-value mb-2 text-center">{label}</span>
       <button
         onClick={onChange}
         className={`w-full h-9 rounded-full border-2 flex items-center px-1 transition-colors ${
