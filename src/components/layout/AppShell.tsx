@@ -24,6 +24,10 @@ import { ModalManager } from '@/components/modals/ModalManager';
 // Export button
 import { ExportButton } from '@/components/shared';
 
+// Flowchart button
+import { FlowchartButton } from '@/components/flowchart/FlowchartButton';
+import { isFeatureEnabled } from '@/config/features';
+
 import type { PageId } from '@/types';
 
 // Lazy-loaded pages - less frequently accessed
@@ -143,6 +147,7 @@ function PageRenderer() {
       </main>
       <ModalManager />
       <ExportButton />
+      {isFeatureEnabled('FLOWCHART') && <FlowchartButton />}
     </div>
   );
 }

@@ -145,6 +145,45 @@ Disabled features show a friendly "Feature Disabled" message with a back button.
 - `src/config/themePresets.ts` - 7 theme presets (grayscale, purple, blue, green, orange, pink, teal)
 - `src/config/features.ts` - Feature flags for enabling/disabling features
 - `src/config/registry.ts` - Centralized page, modal, and event registry
+- `src/config/flowchart.config.ts` - Flowchart node positions and flow definitions
+- `src/config/screen-metadata.config.ts` - Screen documentation metadata
+- `src/config/gd-schemas.config.ts` - GD input schemas for LiveOps configuration
+
+### Flowchart & Simulation System
+
+The flowchart system provides interactive visualization of game user flows. Access via the flowchart icon in the admin panel header.
+
+**Components:**
+- `src/components/flowchart/FlowchartOverlay.tsx` - Main overlay container
+- `src/components/flowchart/FlowchartCanvas.tsx` - React Flow canvas
+- `src/components/flowchart/nodes/ScreenNode.tsx` - Screen node component
+- `src/components/flowchart/edges/LabeledEdge.tsx` - Edge with action labels
+- `src/components/flowchart/panels/` - Side panel components (Simulation, GD Inputs, Info)
+- `src/components/flowchart/controls/FlowchartToolbar.tsx` - Toolbar with filters and export
+
+**Features:**
+- Visual flowchart with screen nodes and transition edges
+- Filter flows by category (Core Loop, LiveOps, Social, etc.)
+- Simulation panel to adjust player state and see condition changes
+- GD Input panel for configuring LiveOps parameters
+- Screen Info panel showing detailed metadata per screen
+- Export to PNG, SVG, or JSON
+- Keyboard shortcuts (press `?` to see all)
+- Responsive design (side panel becomes drawer on mobile)
+
+**Key Types:**
+```typescript
+// src/types/flowchart.ts - Node and edge types
+// src/types/simulation.ts - Simulation state types
+// src/types/gd-inputs.ts - GD schema types
+// src/types/screen-metadata.ts - Screen documentation types
+```
+
+**State Management:**
+```typescript
+import { useSimulation } from '@/store/SimulationContext';
+const { state, setPlayerValue, loadScenario } = useSimulation();
+```
 
 ### Testing
 

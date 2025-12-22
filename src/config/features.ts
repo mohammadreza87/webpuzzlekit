@@ -131,6 +131,12 @@ export const FEATURES = {
   /** Enable export to PNG feature */
   EXPORT_TO_PNG: true,
 
+  /** Enable flowchart & simulation view */
+  FLOWCHART: true,
+
+  /** Enable GD input tools */
+  GD_TOOLS: true,
+
   // ═══════════════════════════════════════════════════════════════════════════
   // EXPERIMENTAL (Phase 2)
   // ═══════════════════════════════════════════════════════════════════════════

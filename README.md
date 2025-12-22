@@ -79,6 +79,19 @@ Puzzle Kit is a modular, production-ready prototype for puzzle game UI/UX. Built
 | **Auto-Save** | All settings persist to localStorage |
 | **Reset** | One-click restore to defaults |
 
+### Flowchart & Simulation
+
+| Feature | Description |
+|---------|-------------|
+| **Visual Flowchart** | Interactive user flow visualization with React Flow |
+| **Flow Filters** | Filter by Core Loop, LiveOps, Social, Monetization, etc. |
+| **Simulation Panel** | Adjust player state (coins, lives, level) to test conditions |
+| **GD Input Panel** | Configure LiveOps parameters with forms and presets |
+| **Screen Info Panel** | View detailed documentation for each screen |
+| **Export Options** | Export flowchart as PNG, SVG, or JSON data |
+| **Keyboard Shortcuts** | Press `?` to view all shortcuts |
+| **Responsive Design** | Side panel becomes drawer on mobile devices |
+
 ### UI/UX Features
 
 - **Swipe Navigation** - Swipe left/right between main tabs

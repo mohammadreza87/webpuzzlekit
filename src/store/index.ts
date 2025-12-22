@@ -2,3 +2,4 @@ export { GameProvider, useGame, gameActions } from './GameContext';
 export { NavigationProvider, useNavigation } from './NavigationContext';
 export { AdminProvider, useAdmin } from './AdminContext';
 export { WinningStreakProvider, useWinningStreak, winningStreakActions } from './WinningStreakContext';
+export { SimulationProvider, useSimulation } from './SimulationContext';
