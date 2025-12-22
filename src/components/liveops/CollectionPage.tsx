@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@/store';
 import { BottomNavigation } from '@/components/shared';
+import { GameIcon } from '@/components/base';
 
 // Collection sets data
 const collectionSets = [
@@ -48,7 +49,7 @@ export function CollectionPage() {
           onClick={() => openModal('card-stars')}
           className="w-9 h-9 bg-border-strong rounded-full flex items-center justify-center border border-border"
         >
-          <span className="text-text-primary text-mini">STAR</span>
+          <GameIcon code="STAR" size={20} />
         </button>
       </div>
 
@@ -73,13 +74,13 @@ export function CollectionPage() {
 
             <div className="flex flex-col items-center">
               <div className="w-12 h-12 bg-border-strong rounded-lg flex items-center justify-center">
-                <span className="text-text-primary text-value">TRP</span>
+                <GameIcon code="TRP" size={28} />
               </div>
             </div>
 
             <div className="flex flex-col items-center">
               <div className="w-10 h-10 bg-border-strong rounded-full flex items-center justify-center">
-                <span className="text-text-primary text-mini font-bold">TNT</span>
+                <GameIcon code="TNT" size={20} />
               </div>
               <span className="text-text-primary text-mini font-bold mt-0.5">x10</span>
             </div>
@@ -101,7 +102,7 @@ export function CollectionPage() {
             }}
             className="w-6 h-6 bg-border-strong rounded flex items-center justify-center border border-border"
           >
-            <span className="text-text-primary text-mini">CAT</span>
+            <GameIcon code="CAT" size={14} />
           </button>
           <div className="flex-1 relative">
             <div className="h-4 bg-border-strong rounded-full overflow-hidden">
@@ -121,7 +122,7 @@ export function CollectionPage() {
             }}
             className="w-7 h-7 bg-border-strong rounded flex items-center justify-center border border-border"
           >
-            <span className="text-text-primary text-mini font-bold">CHT</span>
+            <GameIcon code="CHT" size={16} />
           </button>
         </div>
 
@@ -138,19 +139,19 @@ export function CollectionPage() {
         <div className="mx-2 mt-1.5 bg-bg-page rounded-lg border border-border p-2">
           <div className="flex items-center justify-center gap-1.5 flex-wrap">
             <div className="w-6 h-6 bg-border-strong rounded flex items-center justify-center">
-              <span className="text-text-primary text-mini font-bold">TRP</span>
+              <GameIcon code="TRP" size={14} />
             </div>
             <span className="text-text-muted text-mini">+</span>
             <div className="flex flex-col items-center">
               <div className="w-6 h-6 bg-border-strong rounded-full flex items-center justify-center">
-                <span className="text-text-primary text-mini font-bold">$</span>
+                <GameIcon code="COIN" size={14} />
               </div>
               <span className="text-text-primary text-mini font-bold">10k</span>
             </div>
             <span className="text-text-muted text-mini">+</span>
             <div className="flex flex-col items-center">
               <div className="w-6 h-6 bg-border-strong rounded-full flex items-center justify-center">
-                <span className="text-text-primary text-mini font-bold">BST</span>
+                <GameIcon code="BST" size={14} />
               </div>
               <span className="text-text-primary text-mini font-bold">x10</span>
             </div>

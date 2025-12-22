@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigation, useAdmin } from '@/store';
 import { useTimer } from '@/hooks';
+import { GameIcon } from '@/components/base';
 
 // Mission types
 interface Mission {
@@ -186,7 +187,7 @@ export function MissionControlPage() {
           <div className="flex justify-center gap-3">
             {missionControlData.grandPrizeRewards.map((reward, idx) => (
               <div key={idx} className="w-12 h-12 bg-bg-muted rounded-lg flex flex-col items-center justify-center border border-border-strong">
-                <span className="text-text-primary text-mini font-bold">{reward.icon}</span>
+                <GameIcon code={reward.icon} size={18} />
                 <span className="text-text-primary text-mini">{reward.label}</span>
               </div>
             ))}

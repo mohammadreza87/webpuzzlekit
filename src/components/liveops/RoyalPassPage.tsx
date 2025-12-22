@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigation, useAdmin } from '@/store';
 import { useTimer } from '@/hooks';
+import { GameIcon } from '@/components/base';
 
 // Royal Pass reward types
 interface Reward {
@@ -94,7 +95,7 @@ export function RoyalPassPage() {
         <div className="px-3 pb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-bg-inverse rounded-lg flex items-center justify-center border border-border">
-              <span className="text-text-inverse text-mini">KEY</span>
+              <GameIcon code="KEY" size={16} />
             </div>
             <div className="flex-1 h-3 bg-border-strong rounded-full overflow-hidden">
               <div
@@ -146,7 +147,7 @@ export function RoyalPassPage() {
                     : 'bg-bg-muted border-border opacity-50'
               }`}>
                 <div className="h-12 rounded-lg bg-border-strong flex flex-col items-center justify-center">
-                  <span className="text-text-primary text-value-sm">{stage.freeReward.icon}</span>
+                  <GameIcon code={stage.freeReward.icon} size={20} />
                   <span className="text-text-muted text-mini">{stage.freeReward.amount}</span>
                 </div>
                 {stage.claimed && (
@@ -178,9 +179,7 @@ export function RoyalPassPage() {
                 <div className={`h-12 rounded-lg flex flex-col items-center justify-center ${
                   isActivated ? 'bg-border-strong' : 'bg-border-strong'
                 }`}>
-                  <span className={`text-value-sm ${isActivated ? 'text-text-primary' : 'text-text-muted'}`}>
-                    {stage.premiumReward.icon}
-                  </span>
+                  <GameIcon code={stage.premiumReward.icon} size={20} className={isActivated ? '' : 'opacity-50'} />
                   <span className={`text-mini ${isActivated ? 'text-text-secondary' : 'text-text-muted'}`}>
                     {stage.premiumReward.amount}
                   </span>
@@ -250,7 +249,7 @@ export function RoyalPassPage() {
                 </div>
                 <div className="flex items-center gap-3 bg-bg-card rounded-xl p-3 border border-border">
                   <div className="w-12 h-12 bg-bg-inverse rounded-xl flex items-center justify-center border border-border">
-                    <span className="text-text-inverse text-value-sm">GFT</span>
+                    <GameIcon code="GFT" size={24} />
                   </div>
                   <span className="text-text-primary text-body">Gift for teammates</span>
                 </div>
@@ -304,7 +303,7 @@ export function RoyalPassPage() {
 
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-14 h-14 bg-bg-inverse rounded-xl flex items-center justify-center flex-shrink-0 border border-border">
-                  <span className="text-text-inverse text-value">KEY</span>
+                  <GameIcon code="KEY" size={28} />
                 </div>
                 <div>
                   <p className="text-text-primary text-h4">Collect Keys</p>
@@ -314,7 +313,7 @@ export function RoyalPassPage() {
 
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-14 h-14 bg-border-strong rounded-xl flex items-center justify-center flex-shrink-0 border border-border">
-                  <span className="text-text-primary text-value">GFT</span>
+                  <GameIcon code="GFT" size={28} />
                 </div>
                 <div>
                   <p className="text-text-primary text-h4">Get Rewards</p>

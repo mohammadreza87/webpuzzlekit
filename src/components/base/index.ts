@@ -37,3 +37,6 @@ export type { ModalProps, ModalSize, ModalHeaderProps, ModalBodyProps, ModalFoot
 
 export { Select } from './Select';
 export type { SelectProps, SelectOption, SelectSize } from './Select';
+
+export { GameIcon, getGameIconPath, hasGameIcon } from './GameIcon';
+export type { } from './GameIcon';

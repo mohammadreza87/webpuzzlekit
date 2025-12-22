@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useNavigation } from '@/store';
+import { GameIcon } from '@/components/base';
 
 interface CardStarsModalProps {
   onAnimatedClose?: () => void;
@@ -83,38 +84,40 @@ export function CardStarsModal({ onAnimatedClose }: CardStarsModalProps) {
               <div className="flex items-center justify-center gap-2 flex-wrap">
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-border-strong rounded flex items-center justify-center">
-                    <span className="text-text-secondary text-mini font-bold">4 CRD</span>
+                    <GameIcon code="CRD" size={20} />
                   </div>
+                  <span className="text-text-secondary text-mini font-bold">x4</span>
                 </div>
                 <span className="text-text-muted font-bold">+</span>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-border-strong rounded flex items-center justify-center">
-                    <span className="text-text-secondary text-mini font-bold">3 CRD</span>
+                    <GameIcon code="CRD" size={20} />
                   </div>
+                  <span className="text-text-secondary text-mini font-bold">x3</span>
                 </div>
                 <span className="text-text-muted font-bold">+</span>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-border-strong rounded-full flex items-center justify-center">
-                    <span className="text-text-secondary text-mini font-bold">ITM</span>
+                    <GameIcon code="ITM" size={20} />
                   </div>
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2 mt-2">
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-border-strong rounded-full flex items-center justify-center">
-                    <span className="text-text-secondary text-mini font-bold">TNT</span>
+                    <GameIcon code="TNT" size={20} />
                   </div>
                 </div>
                 <span className="text-text-muted font-bold">+</span>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-border-strong rounded-full flex items-center justify-center">
-                    <span className="text-text-secondary text-mini font-bold">BST</span>
+                    <GameIcon code="BST" size={20} />
                   </div>
                 </div>
                 <span className="text-text-muted font-bold">+</span>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-border-strong rounded-full flex items-center justify-center">
-                    <span className="text-text-secondary text-mini font-bold">PWR</span>
+                    <GameIcon code="PWR" size={20} />
                   </div>
                 </div>
               </div>
@@ -129,7 +132,7 @@ export function CardStarsModal({ onAnimatedClose }: CardStarsModalProps) {
               onClick={() => setShowChestTooltip(!showChestTooltip)}
               className="w-16 h-16 bg-border-strong rounded-xl border-2 border-border flex items-center justify-center"
             >
-              <span className="text-text-secondary text-value-sm">CHT1</span>
+              <GameIcon code="CHT" size={32} />
             </button>
             <button className="flex items-center gap-2 bg-border-strong rounded-xl px-6 py-3 border-2 border-border">
               <Image src="/icons/Star-Filled.svg" alt="Stars" width={24} height={24} className="opacity-80" />
@@ -140,7 +143,7 @@ export function CardStarsModal({ onAnimatedClose }: CardStarsModalProps) {
           {/* Chest Row 2 - Gold Chest */}
           <div className="flex items-center justify-between">
             <div className="w-16 h-16 bg-border-strong rounded-xl border-2 border-border flex items-center justify-center">
-              <span className="text-text-secondary text-value-sm">CHT2</span>
+              <GameIcon code="CHT" size={32} />
             </div>
           <button className="flex items-center gap-2 bg-border-strong rounded-xl px-6 py-3 border-2 border-border">
             <Image src="/icons/Star-Filled.svg" alt="Stars" width={24} height={24} className="opacity-80" />

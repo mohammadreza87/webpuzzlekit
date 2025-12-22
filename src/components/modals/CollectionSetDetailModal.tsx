@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useNavigation } from '@/store';
+import { GameIcon } from '@/components/base';
 
 interface CollectionSetDetailModalProps {
   onAnimatedClose?: () => void;
@@ -191,7 +192,7 @@ export function CollectionSetDetailModal({ onAnimatedClose }: CollectionSetDetai
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-bg-muted rounded flex items-center justify-center">
-              <span className="text-text-muted text-value-sm">BST</span>
+              <GameIcon code="BST" size={20} />
             </div>
             <span className="text-text-primary font-bold">{currentSet.reward}</span>
           </div>

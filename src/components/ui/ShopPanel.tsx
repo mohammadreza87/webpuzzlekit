@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { GameIcon } from '@/components/base';
 
 // Reusable Shop Panel Component
 interface ShopPanelProps {
@@ -59,7 +60,7 @@ export function ShopPanel({
               {items.map((item, i) => (
                 <div key={i} className="flex items-center gap-2 bg-bg-inverse rounded-lg px-2 py-1">
                   <div className="w-7 h-7 bg-brand-muted rounded-lg flex items-center justify-center">
-                    <span className="text-text-primary text-mini">{item.icon}</span>
+                    <GameIcon code={item.icon} size={16} />
                   </div>
                   <span className="text-text-inverse text-label">
                     {item.count ? `x${item.count}` : 'Bonus'}
@@ -114,7 +115,7 @@ export function ShopPanel({
             {items.slice(0, 4).map((item, i) => (
               <div key={i} className="flex items-center gap-0.5">
                 <div className="w-6 h-6 bg-bg-muted rounded flex items-center justify-center">
-                  <span className="text-text-secondary text-mini">{item.icon}</span>
+                  <GameIcon code={item.icon} size={14} />
                 </div>
                 {item.count && (
                   <span className="text-text-secondary text-mini">x{item.count}</span>
@@ -128,7 +129,7 @@ export function ShopPanel({
             {items.slice(4).map((item, i) => (
               <div key={i} className="flex items-center gap-0.5">
                 <div className="w-6 h-6 bg-bg-muted rounded flex items-center justify-center">
-                  <span className="text-text-secondary text-mini">{item.icon}</span>
+                  <GameIcon code={item.icon} size={14} />
                 </div>
                 {item.count && (
                   <span className="text-text-secondary text-mini">{item.count}</span>
