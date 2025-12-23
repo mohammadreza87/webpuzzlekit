@@ -377,8 +377,8 @@ function FieldInput({ field, value, onChange }: FieldInputProps) {
             }`}
           >
             <span
-              className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
-                value ? 'translate-x-6' : 'translate-x-1'
+              className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
+                value ? 'translate-x-5' : 'translate-x-0'
               }`}
             />
           </button>
