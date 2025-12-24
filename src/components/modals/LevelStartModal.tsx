@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useNavigation, useGame, useWinningStreak } from '@/store';
+import { useNavigation, useGame, useWinningStreak, useAdmin } from '@/store';
 import { Button } from '@/components/base';
 import { winningStreakConfig } from '@/config';
 
@@ -14,6 +14,7 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
   const { closeModal, navigate, openModal } = useNavigation();
   const { state } = useGame();
   const { state: winningStreakState } = useWinningStreak();
+  const { config } = useAdmin();
   const { player, boosters } = state;
   const t = useTranslations('game');
   const tCommon = useTranslations('common');
@@ -144,32 +145,36 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
           </div>
         )}
 
-        {/* Boosters Section */}
-        <p className="text-text-muted text-mini text-center mb-2">{t('selectBoosters')}</p>
-        <div className="flex justify-center gap-3 mb-4">
-          {preGameBoosters.map((booster) => (
-            <BoosterSelect
-              key={booster.id}
-              name={booster.name}
-              count={booster.count}
-              selected={selectedBoosters.includes(booster.id)}
-              onToggle={() => toggleBooster(booster.id)}
-              disabled={booster.count === 0}
-              isStreakBooster={streakBooster.activeBoosters.includes(booster.id)}
-            />
-          ))}
-        </div>
+        {/* Boosters Section - controlled by admin setting */}
+        {config.showPreGameBoosters && (
+          <>
+            <p className="text-text-muted text-mini text-center mb-2">{t('selectBoosters')}</p>
+            <div className="flex justify-center gap-3 mb-4">
+              {preGameBoosters.map((booster) => (
+                <BoosterSelect
+                  key={booster.id}
+                  name={booster.name}
+                  count={booster.count}
+                  selected={selectedBoosters.includes(booster.id)}
+                  onToggle={() => toggleBooster(booster.id)}
+                  disabled={booster.count === 0}
+                  isStreakBooster={streakBooster.activeBoosters.includes(booster.id)}
+                />
+              ))}
+            </div>
 
-        {/* Active Streak Boosters Info */}
-        {showStreakGift && streakBooster.activeBoosters.length > 0 && (
-          <div className="bg-bg-muted rounded-lg px-3 py-2 mb-4 border border-border">
-            <p className="text-mini text-text-muted text-center">
-              <span className="text-text-primary font-medium">
-                +{streakBooster.activeBoosters.length} bonus booster{streakBooster.activeBoosters.length !== 1 ? 's' : ''}
-              </span>
-              {' '}from streak
-            </p>
-          </div>
+            {/* Active Streak Boosters Info */}
+            {showStreakGift && streakBooster.activeBoosters.length > 0 && (
+              <div className="bg-bg-muted rounded-lg px-3 py-2 mb-4 border border-border">
+                <p className="text-mini text-text-muted text-center">
+                  <span className="text-text-primary font-medium">
+                    +{streakBooster.activeBoosters.length} bonus booster{streakBooster.activeBoosters.length !== 1 ? 's' : ''}
+                  </span>
+                  {' '}from streak
+                </p>
+              </div>
+            )}
+          </>
         )}
 
         {/* Play Button */}

@@ -12,7 +12,7 @@ type SectionId = 'tabs' | 'events' | 'theme';
 
 export function AdminPage() {
   const { navigate } = useNavigation();
-  const { config, currentDevice, toggleAreaButton, setDevice, resetToDefaults } = useAdmin();
+  const { config, currentDevice, toggleAreaButton, togglePreGameBoosters, setDevice, resetToDefaults } = useAdmin();
   const [expandedSection, setExpandedSection] = useState<SectionId | null>('tabs');
   const t = useTranslations('admin');
 
@@ -63,6 +63,21 @@ export function AdminPage() {
               <div
                 className={`absolute top-1 w-4 h-4 bg-bg-card rounded-full transition-all ${
                   config.showAreaButton ? 'right-1' : 'left-1'
+                }`}
+              />
+            </button>
+          </div>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-text-secondary text-body-sm">Show Pre-Game Boosters</span>
+            <button
+              onClick={() => togglePreGameBoosters(!config.showPreGameBoosters)}
+              className={`w-12 h-6 rounded-full relative transition-colors ${
+                config.showPreGameBoosters ? 'bg-bg-inverse' : 'bg-bg-muted'
+              }`}
+            >
+              <div
+                className={`absolute top-1 w-4 h-4 bg-bg-card rounded-full transition-all ${
+                  config.showPreGameBoosters ? 'right-1' : 'left-1'
                 }`}
               />
             </button>

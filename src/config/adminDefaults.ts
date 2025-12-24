@@ -48,6 +48,7 @@ export interface AdminConfig {
   eventPlacement: EventPlacement;
   theme: ThemeConfig;
   showAreaButton: boolean;
+  showPreGameBoosters: boolean; // Show booster selection before starting a level
   deviceId: string; // Selected device preset ID
 }
 
@@ -137,6 +138,7 @@ export const defaultAdminConfig: AdminConfig = {
   eventPlacement: defaultEventPlacement,
   theme: defaultTheme,
   showAreaButton: false,
+  showPreGameBoosters: false,
   deviceId: defaultDeviceId,
 };
 
