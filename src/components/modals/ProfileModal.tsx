@@ -1,8 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useGame, useNavigation } from '@/store';
+
+// Avatar options with some locked
+const avatarOptions = [
+  { id: 1, abbr: 'A1', locked: false },
+  { id: 2, abbr: 'A2', locked: false },
+  { id: 3, abbr: 'A3', locked: false },
+  { id: 4, abbr: 'A4', locked: true },
+];
 
 interface ProfileModalProps {
   onAnimatedClose?: () => void;
@@ -10,10 +18,13 @@ interface ProfileModalProps {
 
 export function ProfileModal({ onAnimatedClose }: ProfileModalProps) {
   const { state } = useGame();
-  const { closeModal, openModal } = useNavigation();
-  const { player, areas } = state;
+  const { closeModal } = useNavigation();
+  const { player } = state;
 
-  const completedAreas = areas.filter((a) => a.completed).length;
+  // Local state for editing
+  const [selectedAvatar, setSelectedAvatar] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(player.username);
 
   const handleClose = () => {
     if (onAnimatedClose) {
@@ -21,6 +32,34 @@ export function ProfileModal({ onAnimatedClose }: ProfileModalProps) {
     } else {
       closeModal();
     }
+  };
+
+  const handleAvatarSelect = (avatar: typeof avatarOptions[0]) => {
+    if (!avatar.locked) {
+      setSelectedAvatar(avatar.id);
+    }
+  };
+
+  const handleEditName = () => {
+    setIsEditing(true);
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedName(e.target.value);
+  };
+
+  const handleNameBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setIsEditing(false);
+    }
+  };
+
+  const handleSave = () => {
+    handleClose();
   };
 
   return (
@@ -35,149 +74,103 @@ export function ProfileModal({ onAnimatedClose }: ProfileModalProps) {
 
       {/* Header */}
       <div className="bg-bg-inverse rounded-t-2xl py-2.5 px-3">
-        <h1 className="text-text-inverse text-h4 text-center">Profile</h1>
+        <h1 className="text-text-inverse text-h4 text-center">Your Profile</h1>
       </div>
 
-      {/* Divider line */}
-      <div className="h-0.5 bg-border" />
+      {/* Content */}
+      <div className="bg-bg-card rounded-b-2xl border-x-2 border-b-2 border-border p-4">
+        {/* Profile Info - Avatar, Name, Level */}
+        <div className="flex items-start gap-3 mb-4">
+          {/* Current Avatar */}
+          <div className="w-20 h-20 bg-bg-muted rounded-xl border-2 border-border flex items-center justify-center flex-shrink-0">
+            <span className="text-text-primary text-h1">A{selectedAvatar}</span>
+          </div>
 
-        {/* Profile Card */}
-        <div className="bg-bg-muted p-4">
-          <div className="bg-bg-card rounded-xl border-2 border-border p-3">
-            <div className="flex items-center gap-3">
-              {/* Avatar - Clickable */}
+          {/* Name and Level */}
+          <div className="flex-1 space-y-2">
+            {/* Editable Name Field */}
+            <div className="bg-bg-muted rounded-lg px-3 py-2.5 flex items-center justify-between border border-border">
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={editedName}
+                  onChange={handleNameChange}
+                  onBlur={handleNameBlur}
+                  onKeyDown={handleNameKeyDown}
+                  autoFocus
+                  className="flex-1 bg-transparent text-text-primary font-bold focus:outline-none"
+                  maxLength={20}
+                />
+              ) : (
+                <span className="text-text-primary font-bold">{editedName}</span>
+              )}
               <button
-                onClick={() => openModal('profile-picture')}
-                className="relative flex-shrink-0"
+                onClick={handleEditName}
+                className="w-7 h-7 bg-bg-page rounded flex items-center justify-center border border-border ml-2 hover:opacity-80"
               >
-                <div className="w-24 h-24 bg-bg-muted rounded-xl border-4 border-bg-page flex items-center justify-center overflow-hidden">
-                  <Image
-                    src="/icons/Profile.svg"
-                    alt="Avatar"
-                    width={48}
-                    height={48}
-                    className="opacity-60"
-                  />
-                </div>
-                {/* Edit indicator */}
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-bg-inverse rounded-full border border-border flex items-center justify-center">
-                  <span className="text-text-inverse text-value-sm">+</span>
-                </div>
+                <Image src="/icons/Edit.svg" alt="Edit" width={14} height={14} className="opacity-70" />
               </button>
+            </div>
 
-              {/* Info */}
-              <div className="flex-1">
-                {/* Name */}
-                <h2 className="text-text-primary text-h2 mb-1">{player.username}</h2>
-
-                {/* Playing since tooltip */}
-                <div className="inline-block bg-bg-page rounded-lg px-3 py-1 mb-2">
-                  <span className="text-text-secondary text-mini font-medium">Playing since 05/2022</span>
-                </div>
-
-                {/* Join Date with clock */}
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-bg-muted rounded flex items-center justify-center">
-                    <Image src="/icons/Clock.svg" alt="Date" width={14} height={14} className="opacity-70" />
-                  </div>
-                  <span className="text-text-secondary text-value">05/2022</span>
-                </div>
-              </div>
-
-              {/* Level Badge - Flag style */}
-              <div className="flex-shrink-0">
-                <div className="bg-bg-inverse rounded-t-lg px-4 pt-2 pb-1 border-2 border-border border-b-0">
-                  <div className="text-text-muted text-value-sm text-center">Level</div>
-                  <div className="text-text-inverse text-h1 text-center">{player.currentLevel}</div>
-                </div>
-                {/* Flag bottom point */}
-                <div className="w-0 h-0 mx-auto border-l-[32px] border-r-[32px] border-t-[16px] border-l-transparent border-r-transparent border-t-bg-inverse" />
-              </div>
+            {/* Level Display */}
+            <div className="bg-bg-muted rounded-lg px-3 py-2.5 border border-border">
+              <span className="text-text-secondary">Level {player.currentLevel}</span>
             </div>
           </div>
         </div>
 
-        {/* General Stats Section */}
-        <div className="bg-bg-card px-4 pb-4 rounded-b-2xl border-x-2 border-b-2 border-border">
-          {/* Ribbon Title */}
-          <div className="flex justify-center -mt-1 mb-3">
-            <div className="relative">
-              {/* Ribbon ends */}
-              <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[14px] border-b-[14px] border-r-[16px] border-t-transparent border-b-transparent border-r-bg-muted" />
-              <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[14px] border-b-[14px] border-l-[16px] border-t-transparent border-b-transparent border-l-bg-muted" />
-              {/* Main ribbon */}
-              <div className="bg-bg-muted rounded px-6 py-1.5 border-2 border-border">
-                <span className="text-text-primary font-bold">General Stats</span>
-              </div>
-            </div>
-          </div>
+        {/* Avatar Selection Grid */}
+        <div className="bg-bg-muted rounded-xl p-3 border border-border mb-4">
+          <div className="grid grid-cols-3 gap-3">
+            {avatarOptions.map((avatar) => {
+              const isLocked = avatar.locked;
+              const isSelected = selectedAvatar === avatar.id;
 
-          {/* Stats Card */}
-          <div className="bg-bg-page rounded-xl border-2 border-border p-4">
-            {/* Row 1 */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <StatItem
-                icon="/icons/Medal.svg"
-                label="First Try Wins"
-                value={1726}
-              />
-              <StatItem
-                icon="/icons/Heart-Filled.svg"
-                label="Helps Made"
-                value={659}
-              />
-              <StatItem
-                icon="/icons/Mail.svg"
-                label="Helps Received"
-                value={682}
-              />
-            </div>
+              return (
+                <button
+                  key={avatar.id}
+                  onClick={() => handleAvatarSelect(avatar)}
+                  disabled={isLocked}
+                  className={`relative aspect-square rounded-xl border-2 flex items-center justify-center transition-all ${
+                    isSelected
+                      ? 'bg-bg-page border-text-primary'
+                      : isLocked
+                      ? 'bg-bg-page border-border opacity-70 cursor-not-allowed'
+                      : 'bg-bg-page border-border hover:border-text-secondary'
+                  }`}
+                >
+                  <span className={`text-h2 ${isLocked ? 'text-text-muted' : 'text-text-primary'}`}>
+                    {avatar.abbr}
+                  </span>
 
-            {/* Row 2 */}
-            <div className="grid grid-cols-3 gap-3">
-              <StatItem
-                icon="/icons/Category.svg"
-                label="Areas Completed"
-                value={completedAreas}
-              />
-              <StatItem
-                icon="/icons/Category.svg"
-                label="Collections"
-                value={0}
-              />
-              <StatItem
-                icon="/icons/Category.svg"
-                label="Sets Completed"
-                value={21}
-              />
-            </div>
+                  {/* Selected Checkmark */}
+                  {isSelected && !isLocked && (
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-text-primary rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-bg-page" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  )}
+
+                  {/* Lock Icon */}
+                  {isLocked && (
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-bg-muted rounded-full flex items-center justify-center border border-border">
+                      <Image src="/icons/Lock.svg" alt="Locked" width={12} height={12} className="opacity-70" />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
-      </div>
-  );
-}
 
-// Stat Item Component
-interface StatItemProps {
-  icon: string;
-  label: string;
-  value: number;
-}
-
-function StatItem({ icon, label, value }: StatItemProps) {
-  return (
-    <div className="flex flex-col items-center">
-      {/* Icon */}
-      <div className="w-12 h-12 bg-bg-muted rounded-xl flex items-center justify-center mb-1">
-        <Image src={icon} alt={label} width={28} height={28} className="opacity-70" />
-      </div>
-      {/* Label */}
-      <p className="text-text-primary text-mini font-bold text-center whitespace-nowrap mb-1">
-        {label}
-      </p>
-      {/* Value */}
-      <div className="bg-bg-muted rounded-lg px-2 py-1 w-full">
-        <p className="text-text-primary text-h4 text-center">{value}</p>
+        {/* Save Button */}
+        <button
+          onClick={handleSave}
+          className="w-full bg-bg-muted hover:bg-bg-page rounded-xl py-3 border-2 border-border transition-colors"
+        >
+          <span className="text-text-primary text-h3">Save</span>
+        </button>
       </div>
     </div>
   );
