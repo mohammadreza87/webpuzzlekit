@@ -207,13 +207,26 @@ function loadConfig(): AdminState {
     const stored = localStorage.getItem(ADMIN_CONFIG_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
+
+      // Use defaults if arrays are empty or missing
+      const enabledEvents = (parsed.enabledEvents && parsed.enabledEvents.length > 0)
+        ? parsed.enabledEvents
+        : defaultAdminConfig.enabledEvents;
+
+      // For eventPlacement, use defaults if both left and right are empty
+      const hasPlacement = parsed.eventPlacement &&
+        (parsed.eventPlacement.left?.length > 0 || parsed.eventPlacement.right?.length > 0);
+      const eventPlacement = hasPlacement
+        ? parsed.eventPlacement
+        : defaultEventPlacement;
+
       // Merge with defaults to ensure all fields exist
       return {
         ...defaultState,
         ...parsed,
         tabs: parsed.tabs || defaultAdminConfig.tabs,
-        enabledEvents: parsed.enabledEvents || defaultAdminConfig.enabledEvents,
-        eventPlacement: parsed.eventPlacement || defaultEventPlacement,
+        enabledEvents,
+        eventPlacement,
         theme: { ...defaultAdminConfig.theme, ...parsed.theme },
         themePresetId: parsed.themePresetId || 'wireframe',
         showAreaButton: parsed.showAreaButton ?? false,
