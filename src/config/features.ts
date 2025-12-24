@@ -91,7 +91,7 @@ export const FEATURES = {
   /** Lightning Rush - Time-limited challenges */
   EVENT_LIGHTNING_RUSH: true,
 
-  /** Sky Race - Race to the top */
+  /** Beat Blitz - Race to collect the most Applause in 30 minutes */
   EVENT_SKY_RACE: true,
 
   /** King's Cup - Tournament competition */

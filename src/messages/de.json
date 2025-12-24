@@ -83,7 +83,7 @@
     "areas": "Bereiche",
     "teams": "Teams",
     "royalPass": "Rhythm Pass",
-    "skyRace": "Himmelsrennen",
+    "skyRace": "Beat Blitz",
     "kingsCup": "Königspokal",
     "teamChest": "Teamtruhe",
     "bookOfTreasure": "Buch des Schatzes",
@@ -130,8 +130,8 @@
       "description": "Schließe Aufgaben ab, um Premium-Belohnungen zu erhalten"
     },
     "skyRace": {
-      "name": "Himmelsrennen",
-      "description": "Renne gegen andere nach oben"
+      "name": "Beat Blitz",
+      "description": "Sammle in 30 Minuten den meisten Applaus"
     },
     "kingsCup": {
       "name": "Königspokal",

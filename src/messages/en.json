@@ -83,7 +83,7 @@
     "areas": "Areas",
     "teams": "Teams",
     "royalPass": "Rhythm Pass",
-    "skyRace": "Sky Race",
+    "skyRace": "Beat Blitz",
     "kingsCup": "King's Cup",
     "teamChest": "Team Chest",
     "bookOfTreasure": "Clef Collection",
@@ -130,8 +130,8 @@
       "description": "Complete tasks to earn premium rewards"
     },
     "skyRace": {
-      "name": "Sky Race",
-      "description": "Race against others to the top"
+      "name": "Beat Blitz",
+      "description": "Race to collect the most Applause in 30 minutes"
     },
     "kingsCup": {
       "name": "King's Cup",

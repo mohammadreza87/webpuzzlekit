@@ -99,7 +99,7 @@ export const PAGE_REGISTRY = {
   },
   'sky-race': {
     id: 'sky-race',
-    name: 'Sky Race',
+    name: 'Beat Blitz',
     icon: '/icons/Lightning.svg',
     category: 'liveops',
   },
@@ -174,11 +174,11 @@ export const EVENT_REGISTRY = {
   },
   'sky-race': {
     id: 'sky-race',
-    name: 'Sky Race',
+    name: 'Beat Blitz',
     icon: '/icons/Lightning.svg',
-    shortLabel: 'SR',
+    shortLabel: 'BB',
     page: 'sky-race' as const,
-    description: 'Race against others to the top',
+    description: 'Race to collect the most Applause in 30 minutes',
   },
   'kings-cup': {
     id: 'kings-cup',
