@@ -143,7 +143,7 @@ export function SkyRacePage() {
 
                 {/* Stage Icon */}
                 <div className="w-16 h-16 bg-bg-page rounded-2xl border-2 border-border mx-auto mb-3 flex items-center justify-center">
-                  <Image src="/icons/Lightning.svg" alt="Beat Blitz" width={32} height={32} className="opacity-70" />
+                  <Image src="/icons/Fire.svg" alt="Beat Blitz" width={32} height={32} className="opacity-70" />
                 </div>
 
                 <h2 className="text-text-primary text-h2 mb-1">Beat Blitz</h2>

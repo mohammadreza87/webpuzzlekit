@@ -100,7 +100,7 @@ export const PAGE_REGISTRY = {
   'sky-race': {
     id: 'sky-race',
     name: 'Beat Blitz',
-    icon: '/icons/Lightning.svg',
+    icon: '/icons/Fire.svg',
     category: 'liveops',
   },
   'kings-cup': {
@@ -124,7 +124,7 @@ export const PAGE_REGISTRY = {
   'lightning-rush': {
     id: 'lightning-rush',
     name: 'Lightning Rush',
-    icon: '/icons/Lightning.svg',
+    icon: '/icons/Star-Filled.svg',
     category: 'liveops',
   },
   'lava-quest': {
@@ -175,7 +175,7 @@ export const EVENT_REGISTRY = {
   'sky-race': {
     id: 'sky-race',
     name: 'Beat Blitz',
-    icon: '/icons/Lightning.svg',
+    icon: '/icons/Fire.svg',
     shortLabel: 'BB',
     page: 'sky-race' as const,
     description: 'Race to collect the most Applause in 30 minutes',
@@ -207,7 +207,7 @@ export const EVENT_REGISTRY = {
   'lightning-rush': {
     id: 'lightning-rush',
     name: 'Lightning Rush',
-    icon: '/icons/Lightning.svg',
+    icon: '/icons/Star-Filled.svg',
     shortLabel: 'LR',
     page: 'lightning-rush' as const,
     description: 'Quick challenges for fast rewards',
