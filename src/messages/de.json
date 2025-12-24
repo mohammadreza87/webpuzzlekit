@@ -88,7 +88,7 @@
     "teamChest": "Teamtruhe",
     "bookOfTreasure": "Buch des Schatzes",
     "lightningRush": "Blitzansturm",
-    "lavaQuest": "Lava-Quest",
+    "lavaQuest": "Stage Showdown",
     "missionControl": "Melody Quest",
     "album": "Album",
     "collection": "Sammlung",
@@ -150,8 +150,8 @@
       "description": "Schnelle Herausforderungen für schnelle Belohnungen"
     },
     "lavaQuest": {
-      "name": "Lava-Quest",
-      "description": "Navigiere durch vulkanische Herausforderungen"
+      "name": "Stage Showdown",
+      "description": "Trete gegen 99 andere an, um den Hauptpreis zu gewinnen"
     },
     "missionControl": {
       "name": "Melody Quest",

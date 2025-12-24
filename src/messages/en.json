@@ -88,7 +88,7 @@
     "teamChest": "Team Chest",
     "bookOfTreasure": "Clef Collection",
     "lightningRush": "Lightning Rush",
-    "lavaQuest": "Lava Quest",
+    "lavaQuest": "Stage Showdown",
     "missionControl": "Melody Quest",
     "album": "Album",
     "collection": "Collection",
@@ -150,8 +150,8 @@
       "description": "Quick challenges for fast rewards"
     },
     "lavaQuest": {
-      "name": "Lava Quest",
-      "description": "Navigate through volcanic challenges"
+      "name": "Stage Showdown",
+      "description": "Compete against 99 others to win the grand prize"
     },
     "missionControl": {
       "name": "Melody Quest",

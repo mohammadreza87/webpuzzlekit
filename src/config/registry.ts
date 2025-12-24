@@ -129,7 +129,7 @@ export const PAGE_REGISTRY = {
   },
   'lava-quest': {
     id: 'lava-quest',
-    name: 'Lava Quest',
+    name: 'Stage Showdown',
     icon: '/icons/Star-Filled.svg',
     category: 'liveops',
   },
@@ -214,11 +214,11 @@ export const EVENT_REGISTRY = {
   },
   'lava-quest': {
     id: 'lava-quest',
-    name: 'Lava Quest',
+    name: 'Stage Showdown',
     icon: '/icons/Star-Filled.svg',
-    shortLabel: 'LQ',
+    shortLabel: 'SS',
     page: 'lava-quest' as const,
-    description: 'Navigate through volcanic challenges',
+    description: 'Compete against 99 others to win the grand prize',
   },
   'mission-control': {
     id: 'mission-control',

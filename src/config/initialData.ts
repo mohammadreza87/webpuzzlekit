@@ -82,7 +82,7 @@ export function createAllLiveOpsEvents(): LiveOpsEvent[] {
     {
       id: 'ev6',
       type: 'lava-quest',
-      name: 'Lava Quest',
+      name: 'Stage Showdown',
       active: true,
       endTime: new Date(now + 6 * TIME.HOUR),
       progress: 2,
@@ -156,7 +156,7 @@ export function createAllLiveOpsEventsFullList(): LiveOpsEvent[] {
     {
       id: 'ev6',
       type: 'lava-quest',
-      name: 'Lava Quest',
+      name: 'Stage Showdown',
       active: true,
       endTime: new Date(now + 6 * TIME.HOUR),
       progress: 2,

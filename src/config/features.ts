@@ -100,7 +100,7 @@ export const FEATURES = {
   /** Team Chest - Cooperative rewards */
   EVENT_TEAM_CHEST: true,
 
-  /** Lava Quest - Special quest chain */
+  /** Stage Showdown - Battle royale competition against 99 players */
   EVENT_LAVA_QUEST: true,
 
   /** Clef Collection - Collectible milestone rewards */
