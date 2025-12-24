@@ -89,7 +89,7 @@
     "bookOfTreasure": "Clef Collection",
     "lightningRush": "Lightning Rush",
     "lavaQuest": "Lava Quest",
-    "missionControl": "Mission Control",
+    "missionControl": "Melody Quest",
     "album": "Album",
     "collection": "Collection",
     "winningStreak": "Winning Streak"
@@ -154,8 +154,8 @@
       "description": "Navigate through volcanic challenges"
     },
     "missionControl": {
-      "name": "Mission Control",
-      "description": "Complete missions for special rewards"
+      "name": "Melody Quest",
+      "description": "Complete missions to collect Sound Waves and win rewards"
     },
     "album": {
       "name": "Album",

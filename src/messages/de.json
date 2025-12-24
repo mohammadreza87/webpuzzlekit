@@ -89,7 +89,7 @@
     "bookOfTreasure": "Buch des Schatzes",
     "lightningRush": "Blitzansturm",
     "lavaQuest": "Lava-Quest",
-    "missionControl": "Missionskontrolle",
+    "missionControl": "Melody Quest",
     "album": "Album",
     "collection": "Sammlung",
     "winningStreak": "Siegesserie"
@@ -154,8 +154,8 @@
       "description": "Navigiere durch vulkanische Herausforderungen"
     },
     "missionControl": {
-      "name": "Missionskontrolle",
-      "description": "Schließe Missionen für spezielle Belohnungen ab"
+      "name": "Melody Quest",
+      "description": "Schließe Missionen ab, um Schallwellen zu sammeln und Belohnungen zu gewinnen"
     },
     "album": {
       "name": "Album",

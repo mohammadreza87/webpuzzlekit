@@ -196,11 +196,11 @@ export function createAllLiveOpsEventsFullList(): LiveOpsEvent[] {
     {
       id: 'ev10',
       type: 'mission-control',
-      name: 'Mission Control',
+      name: 'Melody Quest',
       active: true,
-      endTime: new Date(now + 7 * TIME.DAY),
-      progress: 3,
-      maxProgress: 10,
+      endTime: new Date(now + 4 * TIME.DAY),
+      progress: 0,
+      maxProgress: 16,
       rewards: [{ type: 'coins', amount: 2500 }],
     },
     {

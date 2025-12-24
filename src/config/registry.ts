@@ -135,7 +135,7 @@ export const PAGE_REGISTRY = {
   },
   'mission-control': {
     id: 'mission-control',
-    name: 'Mission Control',
+    name: 'Melody Quest',
     icon: '/icons/Flag.svg',
     category: 'liveops',
   },
@@ -222,11 +222,11 @@ export const EVENT_REGISTRY = {
   },
   'mission-control': {
     id: 'mission-control',
-    name: 'Mission Control',
+    name: 'Melody Quest',
     icon: '/icons/Flag.svg',
-    shortLabel: 'MC',
+    shortLabel: 'MQ',
     page: 'mission-control' as const,
-    description: 'Complete missions for special rewards',
+    description: 'Complete missions to collect Sound Waves and win rewards',
   },
   'album': {
     id: 'album',

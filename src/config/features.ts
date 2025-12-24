@@ -106,7 +106,7 @@ export const FEATURES = {
   /** Clef Collection - Collectible milestone rewards */
   EVENT_CLEF_COLLECTION: true,
 
-  /** Mission Control - Daily/weekly missions */
+  /** Melody Quest - Complete missions to collect Sound Waves and win rewards */
   EVENT_MISSION_CONTROL: true,
 
   /** Winning Streak - Consecutive win bonuses */
