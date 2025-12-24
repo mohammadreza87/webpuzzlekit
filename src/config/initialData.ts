@@ -80,6 +80,16 @@ export function createAllLiveOpsEvents(): LiveOpsEvent[] {
 
   return [
     {
+      id: 'ev2',
+      type: 'sky-race',
+      name: 'Beat Blitz',
+      active: true,
+      endTime: new Date(now + 2 * TIME.DAY),
+      progress: 0,
+      maxProgress: 100,
+      rewards: [{ type: 'coins', amount: 1000 }],
+    },
+    {
       id: 'ev6',
       type: 'lava-quest',
       name: 'Stage Showdown',
@@ -116,11 +126,11 @@ export function createAllLiveOpsEventsFullList(): LiveOpsEvent[] {
     {
       id: 'ev2',
       type: 'sky-race',
-      name: 'Sky Race',
+      name: 'Beat Blitz',
       active: true,
       endTime: new Date(now + 2 * TIME.DAY),
-      progress: 8,
-      maxProgress: 15,
+      progress: 0,
+      maxProgress: 100,
       rewards: [{ type: 'coins', amount: 1000 }],
     },
     {
