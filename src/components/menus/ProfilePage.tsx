@@ -11,14 +11,12 @@ const avatarOptions = [
   { id: 1, abbr: 'A1', locked: false },
   { id: 2, abbr: 'A2', locked: false },
   { id: 3, abbr: 'A3', locked: false },
-  { id: 4, abbr: 'A4', locked: true, unlockLevel: 25 },
-  { id: 5, abbr: 'A5', locked: true, unlockLevel: 50 },
-  { id: 6, abbr: 'A6', locked: true, unlockLevel: 75 },
+  { id: 4, abbr: 'A4', locked: true },
 ];
 
 export function ProfilePage() {
-  const { state, dispatch } = useGame();
-  const { navigate, openModal } = useNavigation();
+  const { state } = useGame();
+  const { navigate } = useNavigation();
 
   // Feature flag check (must be after hooks)
   if (!isFeatureEnabled('PROFILES')) {
@@ -33,8 +31,7 @@ export function ProfilePage() {
   const [editedName, setEditedName] = useState(player.username);
 
   const handleAvatarSelect = (avatar: typeof avatarOptions[0]) => {
-    // Only allow selection if not locked or if player level is high enough
-    if (!avatar.locked || (avatar.unlockLevel && player.currentLevel >= avatar.unlockLevel)) {
+    if (!avatar.locked) {
       setSelectedAvatar(avatar.id);
     }
   };
@@ -49,7 +46,6 @@ export function ProfilePage() {
 
   const handleNameBlur = () => {
     setIsEditing(false);
-    // In a real app, this would persist the change
   };
 
   const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -59,8 +55,6 @@ export function ProfilePage() {
   };
 
   const handleSave = () => {
-    // In a real app, would dispatch to save avatar and username
-    // dispatch({ type: 'UPDATE_PLAYER', payload: { avatar: selectedAvatar, username: editedName } });
     navigate('main-menu');
   };
 
@@ -83,9 +77,10 @@ export function ProfilePage() {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
-        {/* Profile Card - Avatar, Name, Level */}
-        <div className="bg-bg-page rounded-xl border-2 border-border p-4 mb-4">
-          <div className="flex items-start gap-4">
+        {/* Main Card */}
+        <div className="bg-bg-page rounded-xl border-2 border-border p-4">
+          {/* Profile Info - Avatar, Name, Level */}
+          <div className="flex items-start gap-4 mb-4">
             {/* Current Avatar */}
             <div className="w-20 h-20 bg-bg-muted rounded-xl border-2 border-border flex items-center justify-center flex-shrink-0">
               <span className="text-text-primary text-h1">A{selectedAvatar}</span>
@@ -94,7 +89,7 @@ export function ProfilePage() {
             {/* Name and Level */}
             <div className="flex-1 space-y-2">
               {/* Editable Name Field */}
-              <div className="bg-bg-muted rounded-lg px-3 py-2 flex items-center justify-between border border-border">
+              <div className="bg-bg-muted rounded-lg px-3 py-2.5 flex items-center justify-between border border-border">
                 {isEditing ? (
                   <input
                     type="text"
@@ -118,64 +113,56 @@ export function ProfilePage() {
               </div>
 
               {/* Level Display */}
-              <div className="bg-bg-muted rounded-lg px-3 py-2 border border-border">
+              <div className="bg-bg-muted rounded-lg px-3 py-2.5 border border-border">
                 <span className="text-text-secondary">Level {player.currentLevel}</span>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Avatar Selection Section */}
-        <div className="bg-bg-page rounded-xl border-2 border-border p-4">
-          <h3 className="text-text-primary text-value mb-3">Select Avatar</h3>
+          {/* Avatar Selection Grid */}
+          <div className="bg-bg-muted rounded-xl p-3 border border-border">
+            <div className="grid grid-cols-3 gap-3">
+              {avatarOptions.map((avatar) => {
+                const isLocked = avatar.locked;
+                const isSelected = selectedAvatar === avatar.id;
 
-          {/* Avatar Grid - 3 per row */}
-          <div className="grid grid-cols-3 gap-3">
-            {avatarOptions.map((avatar) => {
-              const isLocked = avatar.locked && (!avatar.unlockLevel || player.currentLevel < avatar.unlockLevel);
-              const isSelected = selectedAvatar === avatar.id;
+                return (
+                  <button
+                    key={avatar.id}
+                    onClick={() => handleAvatarSelect(avatar)}
+                    disabled={isLocked}
+                    className={`relative aspect-square rounded-xl border-2 flex items-center justify-center transition-all ${
+                      isSelected
+                        ? 'bg-bg-page border-text-primary'
+                        : isLocked
+                        ? 'bg-bg-page border-border opacity-70 cursor-not-allowed'
+                        : 'bg-bg-page border-border hover:border-text-secondary'
+                    }`}
+                  >
+                    <span className={`text-h2 ${isLocked ? 'text-text-muted' : 'text-text-primary'}`}>
+                      {avatar.abbr}
+                    </span>
 
-              return (
-                <button
-                  key={avatar.id}
-                  onClick={() => handleAvatarSelect(avatar)}
-                  disabled={isLocked}
-                  className={`relative aspect-square rounded-xl border-2 flex items-center justify-center transition-all ${
-                    isSelected
-                      ? 'bg-bg-muted border-border ring-2 ring-text-primary ring-offset-2 ring-offset-bg-page'
-                      : isLocked
-                      ? 'bg-bg-muted border-border opacity-60 cursor-not-allowed'
-                      : 'bg-bg-muted border-border hover:border-text-secondary'
-                  }`}
-                >
-                  <span className={`text-h2 ${isLocked ? 'text-text-muted' : 'text-text-primary'}`}>
-                    {avatar.abbr}
-                  </span>
+                    {/* Selected Checkmark */}
+                    {isSelected && !isLocked && (
+                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-text-primary rounded-full flex items-center justify-center">
+                        <svg className="w-4 h-4 text-bg-page" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    )}
 
-                  {/* Selected Checkmark */}
-                  {isSelected && !isLocked && (
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-text-primary rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-bg-page" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                  )}
-
-                  {/* Lock Icon */}
-                  {isLocked && (
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-bg-inverse rounded-full flex items-center justify-center border border-border">
-                      <Image src="/icons/Lock.svg" alt="Locked" width={12} height={12} className="opacity-70" />
-                    </div>
-                  )}
-                </button>
-              );
-            })}
+                    {/* Lock Icon */}
+                    {isLocked && (
+                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-bg-muted rounded-full flex items-center justify-center border border-border">
+                        <Image src="/icons/Lock.svg" alt="Locked" width={12} height={12} className="opacity-70" />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-
-          {/* Lock hint */}
-          <p className="text-text-muted text-caption mt-3 text-center">
-            Unlock more avatars as you level up!
-          </p>
         </div>
       </div>
 
