@@ -85,7 +85,7 @@ export const FEATURES = {
   // Toggle which events are available in your game
   // ═══════════════════════════════════════════════════════════════════════════
 
-  /** Royal Pass - Battle pass style progression */
+  /** Rhythm Pass - Battle pass style progression */
   EVENT_ROYAL_PASS: true,
 
   /** Lightning Rush - Time-limited challenges */

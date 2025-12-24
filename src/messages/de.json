@@ -82,7 +82,7 @@
     "areaTasks": "Bereichsaufgaben",
     "areas": "Bereiche",
     "teams": "Teams",
-    "royalPass": "Royal Pass",
+    "royalPass": "Rhythm Pass",
     "skyRace": "Himmelsrennen",
     "kingsCup": "Königspokal",
     "teamChest": "Teamtruhe",
@@ -126,7 +126,7 @@
   },
   "events": {
     "royalPass": {
-      "name": "Royal Pass",
+      "name": "Rhythm Pass",
       "description": "Schließe Aufgaben ab, um Premium-Belohnungen zu erhalten"
     },
     "skyRace": {
@@ -231,7 +231,7 @@
   },
   "shop": {
     "title": "Shop",
-    "royalPass": "Royal Pass",
+    "royalPass": "Rhythm Pass",
     "activate": "Aktivieren",
     "specialOffer": "Sonderangebot",
     "princesTreasure": "Prinzenschatz",

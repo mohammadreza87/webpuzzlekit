@@ -14,11 +14,11 @@ import type { GDSchema } from '@/types/gd-inputs';
 // =============================================================================
 
 /**
- * Royal Pass (Battle Pass) Schema
+ * Rhythm Pass (Battle Pass) Schema
  */
 const royalPassSchema: GDSchema = {
   moduleId: 'royal-pass',
-  moduleName: 'Royal Pass',
+  moduleName: 'Rhythm Pass',
   description: 'Battle pass with free and premium reward tracks',
   icon: '👑',
   category: 'liveops',

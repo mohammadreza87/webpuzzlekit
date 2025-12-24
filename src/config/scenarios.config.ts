@@ -203,7 +203,7 @@ export const SCENARIOS: Scenario[] = [
   {
     id: 'event-ending',
     name: 'Event Ending Soon',
-    description: 'Royal Pass ending in 1 hour, not claimed',
+    description: 'Rhythm Pass ending in 1 hour, not claimed',
     icon: '⏰',
     state: {
       events: {

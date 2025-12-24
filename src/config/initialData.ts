@@ -103,7 +103,7 @@ export function createAllLiveOpsEventsFullList(): LiveOpsEvent[] {
     {
       id: 'ev1',
       type: 'royal-pass',
-      name: 'Royal Pass',
+      name: 'Rhythm Pass',
       active: true,
       endTime: new Date(now + 12 * TIME.DAY),
       progress: 450,

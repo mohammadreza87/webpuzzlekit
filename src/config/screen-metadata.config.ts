@@ -138,7 +138,7 @@ const levelComplete: ScreenMetadata = {
   logic: [
     'Displays completion celebration animation',
     'Shows stars earned (1-3 based on moves remaining)',
-    'Awards event progress (Royal Pass, Team Chest, etc.)',
+    'Awards event progress (Rhythm Pass, Team Chest, etc.)',
     'Advances Harmonic Blessing tier if active',
   ],
   conditions: [
@@ -656,7 +656,7 @@ const profile: ScreenMetadata = {
 
 const royalPass: ScreenMetadata = {
   id: 'royal-pass',
-  name: 'Royal Pass',
+  name: 'Rhythm Pass',
   category: 'liveops',
   description: 'Season pass with free and premium reward tracks. Progress by completing levels.',
   logic: [

@@ -93,7 +93,7 @@ export const PAGE_REGISTRY = {
   // LiveOps event pages
   'royal-pass': {
     id: 'royal-pass',
-    name: 'Royal Pass',
+    name: 'Rhythm Pass',
     icon: '/icons/Badge.svg',
     category: 'liveops',
   },
@@ -166,7 +166,7 @@ export const PAGE_REGISTRY = {
 export const EVENT_REGISTRY = {
   'royal-pass': {
     id: 'royal-pass',
-    name: 'Royal Pass',
+    name: 'Rhythm Pass',
     icon: '/icons/Badge.svg',
     shortLabel: 'RP',
     page: 'royal-pass' as const,
