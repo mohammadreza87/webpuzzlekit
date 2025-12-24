@@ -39,6 +39,7 @@ type AdminAction =
   | { type: 'SET_THEME_PRESET'; payload: string }
   | { type: 'TOGGLE_AREA_BUTTON'; payload: boolean }
   | { type: 'TOGGLE_PRE_GAME_BOOSTERS'; payload: boolean }
+  | { type: 'TOGGLE_SUPER_BOOSTER'; payload: boolean }
   | { type: 'SET_DEVICE'; payload: string }
   | { type: 'RESET_TO_DEFAULTS' };
 
@@ -153,6 +154,9 @@ function adminReducer(state: AdminState, action: AdminAction): AdminState {
     case 'TOGGLE_PRE_GAME_BOOSTERS':
       return { ...state, showPreGameBoosters: action.payload };
 
+    case 'TOGGLE_SUPER_BOOSTER':
+      return { ...state, showSuperBooster: action.payload };
+
     case 'SET_DEVICE':
       return { ...state, deviceId: action.payload };
 
@@ -182,6 +186,7 @@ interface AdminContextValue {
   setDevice: (deviceId: string) => void;
   toggleAreaButton: (show: boolean) => void;
   togglePreGameBoosters: (show: boolean) => void;
+  toggleSuperBooster: (show: boolean) => void;
   resetToDefaults: () => void;
 }
 
@@ -208,6 +213,7 @@ function loadConfig(): AdminState {
         themePresetId: parsed.themePresetId || 'wireframe',
         showAreaButton: parsed.showAreaButton ?? false,
         showPreGameBoosters: parsed.showPreGameBoosters ?? false,
+        showSuperBooster: parsed.showSuperBooster ?? false,
         deviceId: parsed.deviceId || defaultDeviceId,
       };
     }
@@ -351,6 +357,10 @@ export function AdminProvider({ children }: AdminProviderProps) {
     dispatch({ type: 'TOGGLE_PRE_GAME_BOOSTERS', payload: show });
   }, []);
 
+  const toggleSuperBooster = useCallback((show: boolean) => {
+    dispatch({ type: 'TOGGLE_SUPER_BOOSTER', payload: show });
+  }, []);
+
   const resetToDefaults = useCallback(() => {
     dispatch({ type: 'RESET_TO_DEFAULTS' });
   }, []);
@@ -374,6 +384,7 @@ export function AdminProvider({ children }: AdminProviderProps) {
         setDevice,
         toggleAreaButton,
         togglePreGameBoosters,
+        toggleSuperBooster,
         resetToDefaults,
       }}
     >

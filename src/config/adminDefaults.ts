@@ -49,6 +49,7 @@ export interface AdminConfig {
   theme: ThemeConfig;
   showAreaButton: boolean;
   showPreGameBoosters: boolean; // Show booster selection before starting a level
+  showSuperBooster: boolean; // Show super booster in level start modal
   deviceId: string; // Selected device preset ID
 }
 
@@ -139,6 +140,7 @@ export const defaultAdminConfig: AdminConfig = {
   theme: defaultTheme,
   showAreaButton: false,
   showPreGameBoosters: false,
+  showSuperBooster: false,
   deviceId: defaultDeviceId,
 };
 

@@ -54,7 +54,7 @@ export function LevelStartModal({ onAnimatedClose }: LevelStartModalProps) {
 
   // Module visibility checks
   const showStreakGift = enabledModules.streakBooster && streakBooster.isUnlocked;
-  const showSuperBooster = enabledModules.superBooster && superBooster.isUnlocked;
+  const showSuperBooster = config.showSuperBooster && enabledModules.superBooster && superBooster.isUnlocked;
   const { maxTier } = winningStreakConfig.streakBooster;
   const { winsRequired } = winningStreakConfig.superBooster;
 
