@@ -105,12 +105,12 @@ export const allEvents = getAllEventIds().map(id => ({
   icon: EVENT_REGISTRY[id].icon,
 }));
 
-// Default enabled events (melody quest, rhythm pass and clef-collection for progress bar)
-export const defaultEnabledEvents: string[] = ['mission-control', 'royal-pass', 'clef-collection'];
+// Default enabled events (stage showdown, melody quest, rhythm pass and clef-collection for progress bar)
+export const defaultEnabledEvents: string[] = ['lava-quest', 'mission-control', 'royal-pass', 'clef-collection'];
 
-// Default event placement (melody quest and rhythm pass on right)
+// Default event placement (stage showdown on left, melody quest and rhythm pass on right)
 export const defaultEventPlacement: EventPlacement = {
-  left: [],
+  left: ['lava-quest'],
   right: ['mission-control', 'royal-pass'],
 };
 
