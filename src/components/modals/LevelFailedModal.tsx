@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { useNavigation, useGame, useWinningStreak } from '@/store';
+import { useNavigation, useGame, useWinningStreak, useAdmin } from '@/store';
 import { Button } from '@/components/base';
 import { winningStreakConfig } from '@/config';
 
@@ -20,6 +20,7 @@ export function LevelFailedModal({ onAnimatedClose }: LevelFailedModalProps) {
   const { closeModal, navigate } = useNavigation();
   const { state, dispatch: gameDispatch } = useGame();
   const { state: winningStreakState, onLevelFailed } = useWinningStreak();
+  const { config } = useAdmin();
   const { player } = state;
   const hasProcessedRef = useRef(false);
 
@@ -61,9 +62,10 @@ export function LevelFailedModal({ onAnimatedClose }: LevelFailedModalProps) {
 
   // Determine what the player will lose (check state BEFORE the failure was processed)
   // Note: We show what WAS lost since onLevelFailed already ran
+  // Also respect admin settings
   const hadStreak = enabledModules.streakBooster && streakBooster.isUnlocked;
-  const hadSuperBooster = enabledModules.superBooster && superBooster.isUnlocked;
-  const hadBooks = enabledModules.collectibleEvent && collectibleEvent.isUnlocked && collectibleEvent.isActive;
+  const hadSuperBooster = config.showSuperBooster && enabledModules.superBooster && superBooster.isUnlocked;
+  const hadBooks = config.showClefCollection && enabledModules.collectibleEvent && collectibleEvent.isUnlocked && collectibleEvent.isActive;
 
   // Build loss messages
   const losses: string[] = [];

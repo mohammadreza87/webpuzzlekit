@@ -50,6 +50,7 @@ export interface AdminConfig {
   showAreaButton: boolean;
   showPreGameBoosters: boolean; // Show booster selection before starting a level
   showSuperBooster: boolean; // Show super booster in level start modal
+  showClefCollection: boolean; // Show clef collection progress
   deviceId: string; // Selected device preset ID
 }
 
@@ -141,6 +142,7 @@ export const defaultAdminConfig: AdminConfig = {
   showAreaButton: false,
   showPreGameBoosters: false,
   showSuperBooster: false,
+  showClefCollection: false,
   deviceId: defaultDeviceId,
 };
 

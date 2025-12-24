@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { useNavigation, useGame, useWinningStreak } from '@/store';
+import { useNavigation, useGame, useWinningStreak, useAdmin } from '@/store';
 import { Button, Card } from '@/components/base';
 import { winningStreakConfig } from '@/config';
 
@@ -13,6 +13,7 @@ export function LevelCompleteModal({ onAnimatedClose }: LevelCompleteModalProps)
   const { closeModal, navigate } = useNavigation();
   const { dispatch: gameDispatch } = useGame();
   const { state: winningStreakState, onLevelWon } = useWinningStreak();
+  const { config } = useAdmin();
   const hasProcessedRef = useRef(false);
 
   const { streakBooster, superBooster, collectibleEvent } = winningStreakState;
@@ -46,11 +47,13 @@ export function LevelCompleteModal({ onAnimatedClose }: LevelCompleteModalProps)
     setTimeout(() => navigate('main-menu'), 200);
   };
 
-  // Check if any winning streak features are unlocked
+  // Check if any winning streak features are unlocked (respecting admin settings)
+  const showSuperBoosterFeature = config.showSuperBooster && enabledModules.superBooster && superBooster.isUnlocked;
+  const showClefCollectionFeature = config.showClefCollection && enabledModules.collectibleEvent && collectibleEvent.isUnlocked && collectibleEvent.isActive;
   const hasStreakFeatures =
     (enabledModules.streakBooster && streakBooster.isUnlocked) ||
-    (enabledModules.superBooster && superBooster.isUnlocked) ||
-    (enabledModules.collectibleEvent && collectibleEvent.isUnlocked && collectibleEvent.isActive);
+    showSuperBoosterFeature ||
+    showClefCollectionFeature;
 
   // Determine if tier increased
   const tierIncreased = streakBooster.currentTier > 0 && streakBooster.streakCount === streakBooster.currentTier;
@@ -159,7 +162,7 @@ export function LevelCompleteModal({ onAnimatedClose }: LevelCompleteModalProps)
             )}
 
             {/* Super Booster Activated (Module 3) */}
-            {enabledModules.superBooster && superBooster.isUnlocked && superJustActivated && (
+            {showSuperBoosterFeature && superJustActivated && (
               <Card padding="sm" className="border-bg-inverse border-2 text-left">
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 bg-bg-inverse rounded-lg flex items-center justify-center animate-pulse">
@@ -179,7 +182,7 @@ export function LevelCompleteModal({ onAnimatedClose }: LevelCompleteModalProps)
             )}
 
             {/* Super Booster Progress (Module 3) */}
-            {enabledModules.superBooster && superBooster.isUnlocked && !superBooster.isActive && (
+            {showSuperBoosterFeature && !superBooster.isActive && (
               <Card padding="sm" className="text-left">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-bg-muted rounded-lg flex items-center justify-center border border-border">
@@ -206,7 +209,7 @@ export function LevelCompleteModal({ onAnimatedClose }: LevelCompleteModalProps)
             )}
 
             {/* Collectible Event Progress (Module 2) */}
-            {enabledModules.collectibleEvent && collectibleEvent.isUnlocked && collectibleEvent.isActive && (
+            {showClefCollectionFeature && (
               <Card padding="sm" className="text-left">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-bg-inverse rounded-lg flex items-center justify-center">
