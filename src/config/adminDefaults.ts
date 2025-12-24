@@ -105,13 +105,13 @@ export const allEvents = getAllEventIds().map(id => ({
   icon: EVENT_REGISTRY[id].icon,
 }));
 
-// Default enabled events (only clef-collection for progress bar)
-export const defaultEnabledEvents: string[] = ['clef-collection'];
+// Default enabled events (rhythm pass and clef-collection for progress bar)
+export const defaultEnabledEvents: string[] = ['royal-pass', 'clef-collection'];
 
-// Default event placement (empty - no side buttons, only clef-collection progress bar at top)
+// Default event placement (rhythm pass first on right)
 export const defaultEventPlacement: EventPlacement = {
   left: [],
-  right: [],
+  right: ['royal-pass'],
 };
 
 // Default wireframe theme (Pure Grayscale)
