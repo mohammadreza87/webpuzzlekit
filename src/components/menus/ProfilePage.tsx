@@ -1,30 +1,80 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useGame, useNavigation } from '@/store';
 import { FeatureDisabled } from '@/components/shared';
 import { isFeatureEnabled } from '@/config/features';
 
+// Avatar options with some locked
+const avatarOptions = [
+  { id: 1, abbr: 'A1', locked: false },
+  { id: 2, abbr: 'A2', locked: false },
+  { id: 3, abbr: 'A3', locked: false },
+  { id: 4, abbr: 'A4', locked: true, unlockLevel: 25 },
+  { id: 5, abbr: 'A5', locked: true, unlockLevel: 50 },
+  { id: 6, abbr: 'A6', locked: true, unlockLevel: 75 },
+];
+
 export function ProfilePage() {
-  const { state } = useGame();
+  const { state, dispatch } = useGame();
   const { navigate, openModal } = useNavigation();
 
   // Feature flag check (must be after hooks)
   if (!isFeatureEnabled('PROFILES')) {
     return <FeatureDisabled featureName="Profile" />;
   }
-  const { player, areas, team } = state;
 
-  const completedAreas = areas.filter((a) => a.completed).length;
+  const { player } = state;
+
+  // Local state for editing
+  const [selectedAvatar, setSelectedAvatar] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(player.username);
+
+  const handleAvatarSelect = (avatar: typeof avatarOptions[0]) => {
+    // Only allow selection if not locked or if player level is high enough
+    if (!avatar.locked || (avatar.unlockLevel && player.currentLevel >= avatar.unlockLevel)) {
+      setSelectedAvatar(avatar.id);
+    }
+  };
+
+  const handleEditName = () => {
+    setIsEditing(true);
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedName(e.target.value);
+  };
+
+  const handleNameBlur = () => {
+    setIsEditing(false);
+    // In a real app, this would persist the change
+  };
+
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setIsEditing(false);
+    }
+  };
+
+  const handleSave = () => {
+    // In a real app, would dispatch to save avatar and username
+    // dispatch({ type: 'UPDATE_PLAYER', payload: { avatar: selectedAvatar, username: editedName } });
+    navigate('main-menu');
+  };
+
+  const handleClose = () => {
+    navigate('main-menu');
+  };
 
   return (
     <div className="flex flex-col h-full bg-bg-inverse">
       {/* Header */}
       <div className="flex items-center justify-center px-3 py-3 bg-bg-muted relative border-b border-border">
-        <h1 className="text-text-primary text-h2">Profile</h1>
+        <h1 className="text-text-primary text-h2">Your Profile</h1>
         <button
-          onClick={() => navigate('main-menu')}
+          onClick={handleClose}
           className="absolute right-3 w-10 h-10 bg-bg-page rounded-full flex items-center justify-center border-2 border-border hover:opacity-80"
         >
           <span className="text-text-primary text-h2">X</span>
@@ -32,163 +82,112 @@ export function ProfilePage() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* Profile Card */}
+      <div className="flex-1 overflow-y-auto p-4">
+        {/* Profile Card - Avatar, Name, Level */}
+        <div className="bg-bg-page rounded-xl border-2 border-border p-4 mb-4">
+          <div className="flex items-start gap-4">
+            {/* Current Avatar */}
+            <div className="w-20 h-20 bg-bg-muted rounded-xl border-2 border-border flex items-center justify-center flex-shrink-0">
+              <span className="text-text-primary text-h1">A{selectedAvatar}</span>
+            </div>
+
+            {/* Name and Level */}
+            <div className="flex-1 space-y-2">
+              {/* Editable Name Field */}
+              <div className="bg-bg-muted rounded-lg px-3 py-2 flex items-center justify-between border border-border">
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedName}
+                    onChange={handleNameChange}
+                    onBlur={handleNameBlur}
+                    onKeyDown={handleNameKeyDown}
+                    autoFocus
+                    className="flex-1 bg-transparent text-text-primary font-bold focus:outline-none"
+                    maxLength={20}
+                  />
+                ) : (
+                  <span className="text-text-primary font-bold">{editedName}</span>
+                )}
+                <button
+                  onClick={handleEditName}
+                  className="w-7 h-7 bg-bg-page rounded flex items-center justify-center border border-border ml-2 hover:opacity-80"
+                >
+                  <Image src="/icons/Edit.svg" alt="Edit" width={14} height={14} className="opacity-70" />
+                </button>
+              </div>
+
+              {/* Level Display */}
+              <div className="bg-bg-muted rounded-lg px-3 py-2 border border-border">
+                <span className="text-text-secondary">Level {player.currentLevel}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Avatar Selection Section */}
         <div className="bg-bg-page rounded-xl border-2 border-border p-4">
-          <div className="flex items-center gap-4">
-            {/* Avatar - Clickable */}
-            <button
-              onClick={() => openModal('profile-picture')}
-              className="relative"
-            >
-              <div className="w-24 h-24 bg-border-strong rounded-xl border-2 border-border flex items-center justify-center overflow-hidden">
-                <Image
-                  src="/icons/Profile.svg"
-                  alt="Avatar"
-                  width={48}
-                  height={48}
-                  className="opacity-60"
-                />
-              </div>
-              {/* Edit indicator */}
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-bg-muted rounded-lg border-2 border-bg-page flex items-center justify-center">
-                <Image src="/icons/Edit.svg" alt="Edit" width={14} height={14} />
-              </div>
-            </button>
+          <h3 className="text-text-primary text-value mb-3">Select Avatar</h3>
 
-            {/* Info */}
-            <div className="flex-1">
-              <h2 className="text-text-primary text-h2 mb-1">{player.username}</h2>
+          {/* Avatar Grid - 3 per row */}
+          <div className="grid grid-cols-3 gap-3">
+            {avatarOptions.map((avatar) => {
+              const isLocked = avatar.locked && (!avatar.unlockLevel || player.currentLevel < avatar.unlockLevel);
+              const isSelected = selectedAvatar === avatar.id;
 
-              {/* Team */}
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-5 h-5 bg-border-strong rounded flex items-center justify-center">
-                  <Image src="/icons/2User.svg" alt="Team" width={12} height={12} className="opacity-70" />
-                </div>
-                <span className="text-text-muted text-body-sm">
-                  {team ? team.name : 'No Team'}
-                </span>
-              </div>
+              return (
+                <button
+                  key={avatar.id}
+                  onClick={() => handleAvatarSelect(avatar)}
+                  disabled={isLocked}
+                  className={`relative aspect-square rounded-xl border-2 flex items-center justify-center transition-all ${
+                    isSelected
+                      ? 'bg-bg-muted border-border ring-2 ring-text-primary ring-offset-2 ring-offset-bg-page'
+                      : isLocked
+                      ? 'bg-bg-muted border-border opacity-60 cursor-not-allowed'
+                      : 'bg-bg-muted border-border hover:border-text-secondary'
+                  }`}
+                >
+                  <span className={`text-h2 ${isLocked ? 'text-text-muted' : 'text-text-primary'}`}>
+                    {avatar.abbr}
+                  </span>
 
-              {/* Join Date */}
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 bg-border-strong rounded flex items-center justify-center">
-                  <Image src="/icons/Clock.svg" alt="Date" width={12} height={12} className="opacity-70" />
-                </div>
-                <span className="text-text-muted text-body-sm">05/2022</span>
-              </div>
-            </div>
+                  {/* Selected Checkmark */}
+                  {isSelected && !isLocked && (
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-text-primary rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-bg-page" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  )}
 
-            {/* Level Badge */}
-            <div className="bg-border-strong rounded-lg px-3 py-2 border-2 border-border">
-              <div className="text-text-secondary text-value-sm text-center">Level</div>
-              <div className="text-text-primary text-h2 text-center">{player.currentLevel}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* General Stats Section */}
-        <div className="relative">
-          {/* Ribbon Title */}
-          <div className="flex justify-center mb-2">
-            <div className="bg-border-strong rounded-lg px-6 py-1 border-2 border-border relative">
-              {/* Ribbon ends */}
-              <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[10px] border-b-[10px] border-r-[8px] border-t-transparent border-b-transparent border-r-border-strong" />
-              <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[10px] border-b-[10px] border-l-[8px] border-t-transparent border-b-transparent border-l-border-strong" />
-              <span className="text-text-primary text-value">General Stats</span>
-            </div>
+                  {/* Lock Icon */}
+                  {isLocked && (
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-bg-inverse rounded-full flex items-center justify-center border border-border">
+                      <Image src="/icons/Lock.svg" alt="Locked" width={12} height={12} className="opacity-70" />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Stats Card */}
-          <div className="bg-bg-page rounded-xl border-2 border-border p-4">
-            {/* Row 1 */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <StatItem
-                icon="/icons/Check-Circle.svg"
-                label="First Try Wins"
-                value={1726}
-              />
-              <StatItem
-                icon="/icons/Heart-Filled.svg"
-                label="Helps Made"
-                value={659}
-              />
-              <StatItem
-                icon="/icons/Mail.svg"
-                label="Helps Received"
-                value={682}
-              />
-            </div>
-
-            {/* Row 2 */}
-            <div className="grid grid-cols-3 gap-3">
-              <StatItem
-                icon="/icons/Star-Filled.svg"
-                label="Areas Completed"
-                value={completedAreas}
-              />
-              <StatItem
-                icon="/icons/Category.svg"
-                label="Collections Completed"
-                value={0}
-              />
-              <StatItem
-                icon="/icons/Badge.svg"
-                label="Sets Completed"
-                value={21}
-              />
-            </div>
-          </div>
+          {/* Lock hint */}
+          <p className="text-text-muted text-caption mt-3 text-center">
+            Unlock more avatars as you level up!
+          </p>
         </div>
       </div>
 
-      {/* Bottom Navigation (faded) */}
-      <div className="bg-bg-muted border-t-2 border-border opacity-50">
-        <div className="flex justify-around py-2">
-          <NavPlaceholder icon="TRP" />
-          <NavPlaceholder icon="CUP" />
-          <NavPlaceholder icon="HOME" label="Home" />
-          <NavPlaceholder icon="TEAM" />
-          <NavPlaceholder icon="CARD" />
-        </div>
+      {/* Save Button - Fixed at bottom */}
+      <div className="p-4 bg-bg-inverse border-t border-border">
+        <button
+          onClick={handleSave}
+          className="w-full bg-bg-muted hover:bg-bg-page rounded-xl py-4 border-2 border-border transition-colors"
+        >
+          <span className="text-text-primary text-h3">Save</span>
+        </button>
       </div>
-    </div>
-  );
-}
-
-// Stat Item Component
-interface StatItemProps {
-  icon: string;
-  label: string;
-  value: number;
-}
-
-function StatItem({ icon, label, value }: StatItemProps) {
-  return (
-    <div className="flex flex-col items-center">
-      {/* Icon */}
-      <div className="w-10 h-10 bg-bg-muted rounded-lg flex items-center justify-center mb-1 border border-border">
-        <Image src={icon} alt={label} width={20} height={20} className="opacity-70" />
-      </div>
-      {/* Label */}
-      <p className="text-text-secondary text-mini text-center whitespace-nowrap mb-1">
-        {label}
-      </p>
-      {/* Value */}
-      <div className="bg-bg-muted rounded px-3 py-0.5 w-full">
-        <p className="text-text-secondary text-value text-center">{value}</p>
-      </div>
-    </div>
-  );
-}
-
-function NavPlaceholder({ icon, label }: { icon: string; label?: string }) {
-  return (
-    <div className="flex flex-col items-center px-3 py-1">
-      <div className="w-10 h-10 bg-bg-inverse rounded-lg flex items-center justify-center">
-        <span className="text-text-muted text-value-sm">{icon}</span>
-      </div>
-      {label && <span className="text-text-muted text-mini mt-0.5">{label}</span>}
     </div>
   );
 }
